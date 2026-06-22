@@ -181,6 +181,10 @@ img{display:block;max-width:100%}
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:3px;margin-bottom:2.5rem;
 }
+.bph-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:.5rem}
+.bph-photo-cell{display:block;aspect-ratio:1;overflow:hidden;background:var(--surface)}
+.bph-photo-cell img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.bph-photo-cell:hover img{transform:scale(1.05)}
 .bph-ph-cell{
   aspect-ratio:1;background:var(--wall);border:1px solid var(--border);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -964,19 +968,35 @@ function buildBarberGrid() {
 }
 
 /* ════════════ BARBER BIO FULL PAGE ════════════ */
+var BARBER_IMGS = {
+  'omar_blenz':{pfp:'https://scontent-iad6-1.cdninstagram.com/v/t51.82787-19/619258648_18095963543309012_6446890589948182042_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=109&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=VvG6KrZpOQkQ7kNvwHPDHlB&_nc_oc=AdoLdWF6MS5OWriC2SXKfbyRKuyMj2c1G3vWNtULMDmHHEwxSsvDBR0AnVhFp3TfFWQ&_nc_zt=24&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=lsLKZFujvMIX3Nd342mPfg&_nc_ss=7b689&oh=00_Af94U0nqLzwl_FA4k-WfI_n7njjx6iIddM4-iMO_8gKvag&oe=6A3EB284',imgs:['https://scontent-iad6-1.cdninstagram.com/v/t51.82787-15/649233630_18101087690309012_2838503189639740233_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ig_cache_key=Mzg0OTg1MjY4NDUzOTAzMzMyMw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTMyMC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=WChdZrm9HOsQ7kNvwHFolFN&_nc_oc=AdrZXVMoiVrNkA-zk23s4PPm15SAPlv-lKVXlaZVhFmxXHdt0ApbSZs8qD9aMGdzGjk&_nc_zt=23&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=lsLKZFujvMIX3Nd342mPfg&_nc_ss=7b689&oh=00_Af_d2tc7wFvqN42WoyxGO8XtBc7luS4lGE4mq1u0q8Do6Q&oe=6A3EA1F0','https://scontent-iad6-1.cdninstagram.com/v/t51.82787-15/721779198_18112864895309012_8513816495114579549_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=bF4RFndEL9sQ7kNvwG1xJVR&_nc_oc=Ado7DzBcMoYAlNvqVcWrnG-CvCmc14EqPp8YOT5_Hb7KtwHOFZT_dRgq_ATz0XKH9eQ&_nc_zt=23&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=lsLKZFujvMIX3Nd342mPfg&_nc_ss=7b689&oh=00_Af8TMDET0xCxCvkhEG9XpmP9r4EUduXfSuTY1KVwRXYPrA&oe=6A3EA93C','https://scontent-iad3-1.cdninstagram.com/v/t51.82787-15/637144597_18098984954309012_632816532460406873_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=oenWo3YGhioQ7kNvwHa1HGV&_nc_oc=Adpcm2HrkOOfPwcw7RnGcKiPyYCvc5b7kB8zBYaOc1OO28pSBWWYZ4NPjShhMhEWhQo&_nc_zt=23&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=lsLKZFujvMIX3Nd342mPfg&_nc_ss=7b689&oh=00_Af9EkIyS6yxQx9P3v4z2eT2JTukqOOpjdjnINQFBUhb0MA&oe=6A3EAC56','https://scontent-iad6-1.cdninstagram.com/v/t51.82787-15/628857826_18097846430309012_7095276622267280978_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=107&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=t30eU1uo-G8Q7kNvwG8YGBH&_nc_oc=AdqWHx63Y-Z48KLiO4LfaAUuHrE6St3Da1opzQgApTMQ1Cd5YJ3urFHRDvsDmbYmtyo&_nc_zt=23&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=lsLKZFujvMIX3Nd342mPfg&_nc_ss=7b689&oh=00_Af-T2aLhz8d2IZ7CIjvX9TQ2J6KF3Sfb3vh7YAdGQ_EnTA&oe=6A3EB8CC','https://scontent-iad6-1.cdninstagram.com/v/t51.82787-15/622413560_18096547685309012_748062380805751035_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=Gyd0wYL7dl4Q7kNvwFQtHS2&_nc_oc=AdrDHzl2EeVg9f3znHen7AOZo260-G7RkjWft9G4OewzYOb1_vcw0Uvb-GsrhyuIYq4&_nc_zt=23&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=lsLKZFujvMIX3Nd342mPfg&_nc_ss=7b689&oh=00_Af8i--PPuwZGFcPStiDpXgwKWgQ532ijGish3lwg6_yz4w&oe=6A3EADF4','https://scontent-iad3-1.cdninstagram.com/v/t51.82787-15/619485558_18096015092309012_8602680275966260823_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=oUGv3hdl6rcQ7kNvwEODoWM&_nc_oc=AdpHyByLx-10kNRD7RJmEwaO3r0uJSgLowEhexSbEo-GMBwWgnA_RP5UveQNeNADjmc&_nc_zt=23&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=lsLKZFujvMIX3Nd342mPfg&_nc_ss=7b689&oh=00_Af9zjHSmbOy7rq8wiOpRQRv-HjR-3zyxOYgmcP0OR8GTPw&oe=6A3EB841']},
+  'cutzbylesl_thebarber':{pfp:'',imgs:[]},
+  'chinothe_barber':{pfp:'https://scontent-iad6-1.cdninstagram.com/v/t51.2885-19/275857605_465380328614701_87218389985699767_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=107&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=tid6E0osLs0Q7kNvwFzBKuz&_nc_oc=Ado6ZlHxQo80x2ZQ8W6JZnDgr_ifnFYhabT2J5E4hP0a1V-JTg1qkpLGPZy0fldmrzo&_nc_zt=24&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_ss=7b289&oh=00_Af-NqNAmAoDs7WzvrhYs6vaPRJEu4TJ243GZmxYCBSlaHA&oe=6A3EBE92',imgs:['https://scontent-iad3-1.cdninstagram.com/v/t51.82787-15/653869722_18116353333648461_384945452736080191_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ig_cache_key=MzA0NzY5MTM0MDQ1NDAwMzY5NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=IcUa-2PI9OMQ7kNvwHUzMUI&_nc_oc=Adqkb1aDYgsuPerWI7aB72q8DOvMxvaYBET5tgEAuhO3zFFYuWFuK_ihiTuswxKCYCE&_nc_zt=23&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=Ag-HXWjTGRAYKT09u0lRHQ&_nc_ss=7b289&oh=00_Af_1lOU7S6c3uvUvXMkdV47XxpntTMbpZhHi_9EFu7Rw1w&oe=6A3EB208','https://scontent-iad6-1.cdninstagram.com/v/t51.82787-15/660871173_18432700198187180_3879285720990683020_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ig_cache_key=MzA0NzY5MTM0MDI0NDE1MTQ3MQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=WYu_9woxZLEQ7kNvwEl6IMz&_nc_oc=AdoXwfBOzpeB_xhHgegBLpk2iHpbzYPpNAHqqpYjauLTstlQLvbigplWh0dJJ6m_ii0&_nc_zt=23&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=Ag-HXWjTGRAYKT09u0lRHQ&_nc_ss=7b289&oh=00_Af831bn5QLubd3ExClsDLqkO15QldL-BG6hf2m9Dc1LzQg&oe=6A3E9C58','https://scontent-iad3-1.cdninstagram.com/v/t51.82787-15/655137337_18102521410736098_6383388064862946001_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=yIIbBol4zdkQ7kNvwEBMqIs&_nc_oc=Adrmxi2akRvM7NcdTir56CfGBvoJLWsvdjDR2N1lEbbZm4cXt9Jj64ORk120QNamGfs&_nc_zt=23&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=Ag-HXWjTGRAYKT09u0lRHQ&_nc_ss=7b289&oh=00_Af-9wYESl_IGRoUwGCLnmkf-2lExaG8F4gqVR2SZwrThmw&oe=6A3EBCA5','https://scontent-iad6-1.cdninstagram.com/v/t51.71878-15/624938697_1442897717488209_6679982797947014572_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=fXRCd5EHiK4Q7kNvwGsmJxQ&_nc_oc=AdoEQdcx86Ll7Bea57TWXMToCZAyxZ07xXvCTqENCnCXj5GFN5gyREUrLb78euD4RKU&_nc_zt=23&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=Ag-HXWjTGRAYKT09u0lRHQ&_nc_ss=7b289&oh=00_Af_QWKW8SbPXF3uGbshQWw3m_BZOyBiKrzRHDXLsDdReKg&oe=6A3E9708','https://scontent-iad6-1.cdninstagram.com/v/t51.82787-15/652479064_18071200124243475_4733273153821394740_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=8MIBcPR4y3AQ7kNvwGOO4c-&_nc_oc=Adpiw3qK9N_hpYyttrqi2SxE5dHRlfyjl5wTIBZza863g2t4lePfziXDYV9xY8FEJYE&_nc_zt=23&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=Ag-HXWjTGRAYKT09u0lRHQ&_nc_ss=7b289&oh=00_Af-py_iViQNVMvDZ5FETF_1aeULZPBqnC0rOtlLPkyVmcA&oe=6A3EAC69','https://scontent-iad3-1.cdninstagram.com/v/t51.82787-15/650035583_18098040841968525_998019323120541647_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=sNCBPeOvV58Q7kNvwHc6M2o&_nc_oc=AdrvZ9-A3giCAt_lvH5_FyRNRKEhWdskjAIe9ys-pWsnVvIdboup6ldIQNeUhm_kVIM&_nc_zt=23&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=Ag-HXWjTGRAYKT09u0lRHQ&_nc_ss=7b289&oh=00_Af_NHYeFcawHuNTxAUz_24n4zOxPpfbaDzs9edROBHo-0w&oe=6A3E91CE']},
+  'barberinspace':{pfp:'https://scontent-iad6-1.cdninstagram.com/v/t51.82787-19/642533805_18564426445032103_7245805488058265422_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljX3VybGdlbi4xMDgwLm15LmluY29taW5nIn0&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_cat=107&_nc_oc=Q6cZ2gG4d-BJ7f7G4rTWbWY4SJEQFDxZ9vrTpLXfLmboyjAi9ynkePaOgGGJ1IR2hbCicZOvcujQNvnvBvf-f-S_woWut&_nc_ohc=vrZgxVKrd1kQ7kNvwGrxxQ5&_nc_gid=j9lcZIKO1cIidLIrBWkSaA&edm=ALGbJPMBAAAA&ccb=7-5&oh=00_Af_LkoMPNBI_8F6MMfMecJa2_zuuZ6c9ZWjT9gehSOsjDg&oe=6A3EA21D&_nc_sid=7d3ac5',imgs:['https://scontent.cdninstagram.com/v/t39.30808-6/360141899_18371550433032103_729063135959119888_n.jpg?stp=dst-jpg_e35_p1080x1080_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQwLnNkci5yZWd1bGFyX3Bob3RvLmMyIn0&_nc_ht=scontent-lga3-2.cdninstagram.com&_nc_cat=107&_nc_oc=Q6cZ2gHdhCmWQDuDmxvV7ePxxIuAejH8xIeqHmuHOsRFSOQYOV11rB9H5iMPZ5jJwzV5OppNP4961GpD7PsR9S2q64yk&_nc_ohc=yCPNiH1CiqMQ7kNvwGVreQO&_nc_gid=D8a25o4OaX4glHe-nB1CzQ&edm=APU89FAAAAAA&ccb=7-5&oh=00_Af8rj3vjKNtHSNbCXRjZ_B1r99S0q502n7-T3oiwfLvWeA&oe=6A3EBB4E&_nc_sid=bc0c2c&dl=1','https://scontent.cdninstagram.com/v/t51.71878-15/624098032_778759158573927_2302718426321091454_n.jpg?stp=dst-jpg_e15_fr_p1080x1080_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDgwLnNkci52aWRlb19kZWZhdWx0X2NvdmVyX2ZyYW1lLmMyIn0&_nc_ht=scontent-lga3-1.cdninstagram.com&_nc_cat=103&_nc_oc=Q6cZ2gHdhCmWQDuDmxvV7ePxxIuAejH8xIeqHmuHOsRFSOQYOV11rB9H5iMPZ5jJwzV5OppNP4961GpD7PsR9S2q64yk&_nc_ohc=SsyK9_tGwb4Q7kNvwEqjU0L&_nc_gid=D8a25o4OaX4glHe-nB1CzQ&edm=APU89FABAAAA&ccb=7-5&oh=00_Af8YNJaWmNgaOjmaGmspt-YeETI0IlQr3khnGz8v8yOoZA&oe=6A3E9736&_nc_sid=bc0c2c&dl=1','https://scontent.cdninstagram.com/v/t51.82787-15/629349061_18554348320032103_8272165746341305173_n.jpg?stp=dst-jpg_e35_p1080x1080_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQwLnNkci5yZWd1bGFyX3Bob3RvLmMyIn0&_nc_ht=scontent-lga3-2.cdninstagram.com&_nc_cat=107&_nc_oc=Q6cZ2gHdhCmWQDuDmxvV7ePxxIuAejH8xIeqHmuHOsRFSOQYOV11rB9H5iMPZ5jJwzV5OppNP4961GpD7PsR9S2q64yk&_nc_ohc=uUn5gtdtWaoQ7kNvwE3_FHA&_nc_gid=D8a25o4OaX4glHe-nB1CzQ&edm=APU89FABAAAA&ccb=7-5&oh=00_Af85zmAf6cvn0LEADJa4qiXvPh-MTD3G6F1Ul5JfVcYIVg&oe=6A3EBEFB&_nc_sid=bc0c2c&dl=1','https://scontent.cdninstagram.com/v/t51.82787-15/590414404_18542449426032103_9212444568713038136_n.jpg?se=-1&stp=dst-jpegr_e35_p1080x1080_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQwLmhkci5yZWd1bGFyX3Bob3RvLmMyIn0&_nc_ht=scontent-lga3-2.cdninstagram.com&_nc_cat=107&_nc_oc=Q6cZ2gHdhCmWQDuDmxvV7ePxxIuAejH8xIeqHmuHOsRFSOQYOV11rB9H5iMPZ5jJwzV5OppNP4961GpD7PsR9S2q64yk&_nc_ohc=H0Y9b1k7MuoQ7kNvwEDe5DK&_nc_gid=D8a25o4OaX4glHe-nB1CzQ&edm=APU89FABAAAA&ccb=7-5&oh=00_Af_Dxg3WeX-R518Nf_VfdNmQZUmD48i0CcYi4lKozebVxw&oe=6A3E9365&_nc_sid=bc0c2c&dl=1','https://scontent.cdninstagram.com/v/t51.2885-15/484489792_18489099022032103_8187040735183424075_n.jpg?se=-1&stp=dst-jpegr_e35_p1080x1080_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQwLmhkci5yZWd1bGFyX3Bob3RvLmMyIn0&_nc_ht=scontent-lga3-2.cdninstagram.com&_nc_cat=107&_nc_oc=Q6cZ2gHdhCmWQDuDmxvV7ePxxIuAejH8xIeqHmuHOsRFSOQYOV11rB9H5iMPZ5jJwzV5OppNP4961GpD7PsR9S2q64yk&_nc_ohc=5ncd9Ilq67YQ7kNvwGy8_p8&_nc_gid=D8a25o4OaX4glHe-nB1CzQ&edm=APU89FABAAAA&ccb=7-5&oh=00_Af9vUDV7EOwehNpjGXZkv5kFwcFiUBiG9ohBHSlnG0dgRw&oe=6A3EC74B&_nc_sid=bc0c2c&dl=1','https://scontent.cdninstagram.com/v/t51.2885-15/474328544_18479042338032103_8433516157988865168_n.jpg?se=-1&stp=dst-jpegr_e35_p1080x1080_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQwLmhkci5yZWd1bGFyX3Bob3RvLmMyIn0&_nc_ht=scontent-lga3-2.cdninstagram.com&_nc_cat=107&_nc_oc=Q6cZ2gHdhCmWQDuDmxvV7ePxxIuAejH8xIeqHmuHOsRFSOQYOV11rB9H5iMPZ5jJwzV5OppNP4961GpD7PsR9S2q64yk&_nc_ohc=qy5qMVyFGqAQ7kNvwGsgHdV&_nc_gid=D8a25o4OaX4glHe-nB1CzQ&edm=APU89FABAAAA&ccb=7-5&oh=00_Af8yLAJBYsPn2wXWtKrX4OR2Tj3zhMgdhHS1sPkkKqIYBw&oe=6A3EB3C1&_nc_sid=bc0c2c&dl=1']},
+  'southbayjavi':{pfp:'',imgs:[]},
+  'oswuar_the_barber_310':{pfp:'https://cdn2.dumpor.io/a/4a135a44-0f91-4401-a6cf-ff16343ebe91.jpg?t=1782104855',imgs:['https://cdn2.dumpor.io/ci/86b4c07a-68d8-4057-a647-cbdafbf0cd12.jpg?t=1782104855','https://cdn2.dumpor.io/ci/06ecde7a-2c96-4721-bc8b-16af0196b2df.jpg?t=1782104855','https://cdn2.dumpor.io/ci/dad23e46-f954-449e-ab9a-01a9bc00cbdc.jpg?t=1782104855','https://cdn2.dumpor.io/ci/f3e15938-8f3c-47bc-98c0-9b1727b646cc.jpg?t=1782104855','https://cdn2.dumpor.io/ci/11caa76d-1866-4468-ba5e-0316451241c4.jpg?t=1782104855']},
+  'jae_blendz.13':{pfp:'https://scontent-ord5-3.cdninstagram.com/v/t51.2885-19/475514094_914933830807521_3980829748515095483_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby40NTAuYzIifQ&_nc_ht=scontent-ord5-3.cdninstagram.com&_nc_cat=109&_nc_oc=Q6cZ2gGQibCqhgCuL01p9q0wFXpY6LF5rBKxpwonLylWD9eSF9Dta3yXuuACb6mhYE7IqfFsBnLIm9dB_8swo2GG1MGn&_nc_ohc=LzfTMCv7ZkAQ7kNvwEV84SJ&_nc_gid=4FCjajeqVdqSoVPTqBlswQ&edm=ALGbJPMBAAAA&ccb=7-5&oh=00_Af9KupCS1531Lh1msBwhGXr85zC4br7UOHvhhlvTT73NDA&oe=6A3E9388&_nc_sid=7d3ac5',imgs:['https://sp1.picnob.com/p/pt_6764391410533513201270_0_a8f4c94a1988d55ede0c14567f4afda4.jpg?o=aHR0cHM6Ly9zY29udGVudC1vcmQ1LTMuY2RuaW5zdGFncmFtLmNvbS92L3Q1MS43MTg3OC0xNS81NTkwNjUwNTVfMTIzNjc5MzkxMTU0MjA3M183MjE3MDcwMjMxNjIyNzM1ODMzX24uanBnP3N0cD1jMC4yNDguNjQwLjY0MGFfZHN0LWpwZ19lMTVfdHQ2Jl9uY19odD1zY29udGVudC1vcmQ1LTMuY2RuaW5zdGFncmFtLmNvbSZfbmNfY2F0PTEwOSZfbmNfb2M9UTZjWjJnSHRJcmp4M1hvd19SNTB5UEJENDNldDRTSUltWG92cVJtZ1lmLXNnSDgxNjJseTQyMjZqWGIwaXdyYkxFWno5Umh3Y09HcElKdzBRSmFEU2o0RmxxRFomX25jX29oYz19OFZpTlcxUFVSSVE3a052d0dnRXEtMSZfbmNfZ2lkPUNfUUo2LUNUVUV3WXZRamZ5SnR0M0EmZWRtPUFQVTg5RkFCQUFBQSZjY2I9Ny01Jm9oPTAwX0FmLTNGb0ZEU0pZSkhyQlVqMjdtWF9EdlVCV2RsN01HRWNqZWkwNTREeGRwbWcmb2U9NkEzRUFGMjkmX25jX3NpZD1iYzBjMmM=&h=60556953eba40f12cdfa6e94688c6a22','https://sp1.picnob.com/p/pt_6751662644125259492628_0_54c0c03229e1f65863d870d9b49b6718.jpg?o=aHR0cHM6Ly9zY29udGVudC1vcmQ1LTIuY2RuaW5zdGFncmFtLmNvbS92L3Q1MS4yODg1LTE1LzQ4NDg1MDEwOV8xODI3MDAzOTAxMzI4NDk0MV8zMTQxMDMxNTEzOTcwNjkxNTIwX24uanBnP3N0cD1jMC4yODAuNzIwLjcyMGFfZHN0LWpwZ19lMTVfczY0MHg2NDBfdHQ2Jl9uY19odD1zY29udGVudC1vcmQ1LTIuY2RuaW5zdGFncmFtLmNvbSZfbmNfY2F0PTEwNSZfbmNfb2M9UTZjWjJnSHRJcmp4M1hvd19SNTB5UEJENDNldDRTSUltWG92cVJtZ1lmLXNnSDgxNjJseTQyMjZqWGIwaXdyYkxFWno5Umh3Y09HcElKdzBRSmFEU2o0RmxxRFomX25jX29oYz1XRDhLQ2RPb3g1QVE3a052d0dWc2VzMyZfbmNfZ2lkPUNfUUo2LUNUVUV3WXZRamZ5SnR0M0EmZWRtPUFQVTg5RkFCQUFBQSZjY2I9Ny01Jm9oPTAwX0FmOUtGVTNjVlF3dk1MQm1QNDl4Y3I4T05KUEhreFJaTHVHUXJLdWVRUzhyT0Emb2U9NkEzRUM2NjQmX25jX3NpZD1iYzBjMmM=&h=dc24d0d3fb61466b42637e00b7753b67','https://sp1.picnob.com/p/pt_6758287028305616561253_0_ccc63404af51554f4351231a1f0a4f0a.jpg?o=aHR0cHM6Ly9zY29udGVudC1vcmQ1LTIuY2RuaW5zdGFncmFtLmNvbS92L3Q1MS43MTg3OC0xNS81ODc0NzEzNDlfODE0MzMxNTA4MjcwMzg3XzIyMzU1MTc0MzM2NDE4NjQxNjlfbi5qcGc/c3RwPWMwLjI0OC42NDAuNjQwYV9kc3QtanBnX2UxNV90dDYmX25jX2h0PXNjb250ZW50LW9yZDUtMi5jZG5pbnN0YWdyYW0uY29tJl9uY19jYXQ9MTAzJl9uY19vYz1RNmNaMmdIdElyangzWG93X1I1MHlQQkQ0M2V0NFNJSW1Yb3ZxUm1nWWYtc2dIODE2Mmx5NDIyNmpYYjBpd3JiTEVaejlSaHdjT0dwSUp3MFFKYURTajRGbHFEWiZfbmNfb2hjPXlfaFQtNllRY1FvUTdrTnZ3SFFzM1FSJl9uY19naWQ9Q19RSjYtQ1RVRXdZdlFqZnlKdHQzQSZlZG09QVBVODlGQUJBQUFBJmNjYj03LTUmb2g9MDBfQWY5ZFJ5M1JseTl3OURuMFZFbk9SU3YwTnZNX1g0VGtvS09jWkJ6V2Q1TVI5ZyZvZT02QTNFQjhFMyZfbmNfc2lkPWJjMGMyYw==&h=95c89a334e25ce563a0502fcebe35be6','https://sp1.picnob.com/p/pt_6758273513363713283311_0_205578f54939d4fe2b8b08db602de796.jpg?o=aHR0cHM6Ly9zY29udGVudC1vcmQ1LTMuY2RuaW5zdGFncmFtLmNvbS92L3Q1MS43MTg3OC0xNS81ODg2NDM2NTBfODgxODMxNzY4MTMwNzY1XzI4NDYwMzA3NTMzMzA4MzYzOV9uLmpwZz9zdHA9YzAuMjQ4LjY0MC42NDBhX2RzdC1qcGdfZTE1X3R0NiZfbmNfaHQ9c2NvbnRlbnQtb3JkNS0zLmNkbmluc3RhZ3JhbS5jb20mX25jX2NhdD0xMDkmX25jX29jPVE2Y1oyZ0h0SXJqeDNYb3dfUjUweVBCRDQzZXQ0U0lJbVhvdnFSbWdZZi1zZ0g4MTYybHk0MjI2alhiMGl3cmJMRVp6OVJod2NPR3BJSncwUUphRFNqNEZscURaJl9uY19vaGM9c3hVLUt4eGY4T29RN2tOdndHbEMyM1MmX25jX2dpZD1DX1FKNi1DVFVFd1l2UWpmeUp0dDNBJmVkbT1BUFU4OUZBQkFBQUEmY2NiPTctNSZvaD0wMF9BZjhNdjMtcGFQU0FTdE1jN3NkdG1UUnlTMXl6V1FsOGl3ak5Fc0RKbHFZQThnJm9lPTZBM0U5RUU2Jl9uY19zaWQ9YmMwYzJj&h=dc25b03e476fbe0a06d25d032091b200','https://sp1.picnob.com/p/pt_6722261328402219385319_0_ee2f52a35e73c84fd68cdcdb9587ce1f.jpg?o=aHR0cHM6Ly9zY29udGVudC1vcmQ1LTIuY2RuaW5zdGFncmFtLmNvbS92L3Q1MS44Mjc4Ny0xNS81NDA5Nzc1MThfMTgyODkzNzU1NTgyODQ5NDFfODIyMDQ1MzM3NjIxNDA1MTQzOV9uLmpwZz9zdHA9YzAuMjgwLjcyMC43MjBhX2RzdC1qcGdfZTE1X3M2NDB4NjQwX3R0NiZfbmNfaHQ9c2NvbnRlbnQtb3JkNS0yLmNkbmluc3RhZ3JhbS5jb20mX25jX2NhdD0xMDUmX25jX29jPVE2Y1oyZ0h0SXJqeDNYb3dfUjUweVBCRDQzZXQ0U0lJbVhvdnFSbWdZZi1zZ0g4MTYybHk0MjI2alhiMGl3cmJMRVp6OVJod2NPR3BJSncwUUphRFNqNEZscURaJl9uY19vaGM9OEZldEdETHpVR3NRN2tOdndGUEZmUHkmX25jX2dpZD1DX1FKNi1DVFVFd1l2UWpmeUp0dDNBJmVkbT1BUFU4OUZBQkFBQUEmY2NiPTctNSZvaD0wMF9BZjg0SWIydjhLY0tTT0tYaWdBa2NmZ193ZWZuUnVQc1FoQ01JZE9YTS1YQ0tnJm9lPTZBM0U5NzNFJl9uY19zaWQ9YmMwYzJj&h=024552e623e34f8d29af9bc8188937f4','https://sp1.picnob.com/p/pt_6722314840396929355013_0_969db0597cde6b3f2ce833e29e73245e.jpg?o=aHR0cHM6Ly9zY29udGVudC1vcmQ1LTIuY2RuaW5zdGFncmFtLmNvbS92L3Q1MS43MTg3OC0xNS81MzMwNjAyNDhfMjE4NDUzNDgzODY4MTE2Nl82MTg0OTk5MTA0Mjk3MDA0NjE1X24uanBnP3N0cD1jMC4yNDguNjQwLjY0MGFfZHN0LWpwZ19lMTVfdHQ2Jl9uY19odD1zY29udGVudC1vcmQ1LTIuY2RuaW5zdGFncmFtLmNvbSZfbmNfY2F0PTEwMiZfbmNfb2M9UTZjWjJnSHRJcmp4M1hvd19SNTB5UEJENDNldDRTSUltWG92cVJtZ1lmLXNnSDgxNjJseTQyMjZqWGIwaXdyYkxFWno5Umh3Y09HcElKdzBRSmFEU2o0RmxxRFomX25jX29oYz11OE15NXR1dWdmZ1E3a052d0Y4QW5BVCZfbmNfZ2lkPUNfUUo2LUNUVUV3WXZRamZ5SnR0M0EmZWRtPUFQVTg5RkFCQUFBQSZjY2I9Ny01Jm9oPTAwX0FmLUtHbFd6WWU4RXFOWHJWeVd3X3pIY2c2NV9DTlZXUHQ2NmRpR2lKY1ZpZHcmb2U9NkEzRTk0ODMmX25jX3NpZD1iYzBjMmM=&h=df054b58c0934954eb04d8f5c82a0109']},
+  'jc_calibarber':{pfp:'',imgs:[]},
+  'barber_mimi_official':{pfp:'https://sp1.picnob.com/a/a_45034691453_6028366031361856385638183230303854382834_308f3014ad7a77c7d30342eee2a0b7db.jpg?o=aHR0cHM6Ly9zY29udGVudC1vcmQ1LTMuY2RuaW5zdGFncmFtLmNvbS92L3Q1MS4yODg1LTE5LzEzNTU4MzQxMV8yODQyMzQ4MjQyNzUxMDE1Xzg1NTE4ODc5NDc2NTM1NjgyMzBfbi5qcGc/c3RwPWRzdC1qcGdfczE1MHgxNTBfdHQ2JmVmZz1leUoyWlc1amIyUmxYM1JoWnlJNkluQnliMlpwYkdWZmNHbGpMbVJxWVc1bmJ5NHhNRGd3TG1NeUluMCZfbmNfaHQ9c2NvbnRlbnQtb3JkNS0zLmNkbmluc3RhZ3JhbS5jb20mX25jX2NhdD0xMDcmX25jX29jPVE2Y1oyZ0hhWUlyNnVScjlEZXlMMzJiX2pRV2tId2NIdDVubi1GUjNFNjBjZVMwdFRZRTBHYVRweWdOTjFqa1M0X0liZ3hhSUN0WnNVcnRoR0ExS3dpRC0wU1pHJl9uY19vaGM9cTB1WEZyX1lBZkVRN2tOdndITy1zTk8mX25jX2dpZD1ablA0WHB4XzlLVnNQSFJHZC1aMm93JmVkbT1BTEdiSlBNQkFBQUEmY2NiPTctNSZvaD0wMF9BZjhHTWNJM3BJYlZPRDFwcHJ6Yzg5c0JzRHFaRDFkdk5WZ0I5azFnbXhIaVp3Jm9lPTZBM0U5QkJGJl9uY19zaWQ9N2QzYWM1&h=fb71f31a56dc63d9462c364dec4ded94',imgs:['https://sp1.picnob.com/p/pt_6772553427422834571426_0_dd0962d3b62e0dfcd53a0d5a918e40dd.jpg?o=aHR0cHM6Ly9zY29udGVudC1pYWQzLTEuY2RuaW5zdGFncmFtLmNvbS92L3QxNS41MjU2LTEwLzcyNzUxODg0NV8xNDE1MjA1ODk3MTAyOTIwXzI4ODA2NjkwODk3NTUyNzA2OTZfbi5qcGc/c3RwPWMwLjQxOS4xMDgwLjEwODBhX2RzdC1qcGdfZTM1X3M2NDB4NjQwX3NoMi4wOF90dDYmX25jX2h0PXNjb250ZW50LWlhZDMtMS5jZG5pbnN0YWdyYW0uY29tJl9uY19jYXQ9MTA4Jl9uY19vYz1RNmNaMmdGcEdjT3BETnNTNzVzTGZpSjlBTXFvRGdDQWY2N3RRV0xsYjlHLXdrRmNaX0RtNklZZk9rbzVUUU1hemZiVlRYbjRFRTk4c1dZZFJuUkxtT1ZrZnNVZCZfbmNfb2hjPU04TXVkZERfQ1ZjUTdrTnZ3RVYtQzBlJl9uY19naWQ9Wmh0cG5SaVBEN1NmUjhIZFF0OUt5ZyZlZG09QVBVODlGQUFBQUFBJmNjYj03LTUmb2g9MDBfQWZfNWlRcGlKdzg3TXFRSFpfRnF0NWVKLXZkY1V4Q0NqUkFJWTZlR1ZoaXE2USZvZT02QTNFQTcyNSZfbmNfc2lkPWJjMGMyYw==&h=7b5bbe9ae84f58c0adccfcb958581b76','https://sp1.picnob.com/p/pt_6772365755102667277370_0_9cfa30fbb43e59ea13076e50b69a7beb.jpg?o=aHR0cHM6Ly9zY29udGVudC1pYWQ2LTEuY2RuaW5zdGFncmFtLmNvbS92L3QxNS41MjU2LTEwLzcyNDEzODI4OF8xNzQ5MzI2Nzc2MjM4Nzk4Xzc4MjE0ODA1MDIxNzIxNzNfbi5qcGc/c3RwPWMwLjI4MC43MjAuNzIwYV9kc3QtanBnX2UxNV9zNjQweDY0MF90dDYmX25jX2h0PXNjb250ZW50LWlhZDYtMS5jZG5pbnN0YWdyYW0uY29tJl9uY19jYXQ9MTAyJl9uY19vYz1RNmNaMmdGcEdjT3BETnNTNzVzTGZpSjlBTXFvRGdDQWY2N3RRV0xsYjlHLXdrRmNaX0RtNklZZk9rbzVUUU1hemZiVlRYbjRFRTk4c1dZZFJuUkxtT1ZrZnNVZCZfbmNfb2hjPVh3VW9MazZZOVkwUTdrTnZ3RjBhWmM0Jl9uY19naWQ9Wmh0cG5SaVBEN1NmUjhIZFF0OUt5ZyZlZG09QVBVODlGQUFBQUFBJmNjYj03LTUmb2g9MDBfQWZfRWh6WTNxSWFMdld6TVVTYlkyNE0xTFFSampNYjJzQnRaaWhaS28tSTIxZyZvZT02QTNFOTVCMSZfbmNfc2lkPWJjMGMyYw==&h=a1c5065cc83fbd3ad9dc3d43902c4c61','https://sp1.picnob.com/p/pt_6772365763166038463831_0_8db4b4e869427f6c1d07326a02d3021b.jpg?o=aHR0cHM6Ly9zY29udGVudC1pYWQzLTIuY2RuaW5zdGFncmFtLmNvbS92L3QxNS41MjU2LTEwLzcyNDc4MjY1M18xMDI5NTgyMDYzMjExODUzXzkxNjY2MDk1MzY3MjQxMDUwMTZfbi5qcGc/c3RwPWMwLjI4MC43MjAuNzIwYV9kc3QtanBnX2UxNV9zNjQweDY0MF90dDYmX25jX2h0PXNjb250ZW50LWlhZDMtMi5jZG5pbnN0YWdyYW0uY29tJl9uY19jYXQ9MTA1Jl9uY19vYz1RNmNaMmdGcEdjT3BETnNTNzVzTGZpSjlBTXFvRGdDQWY2N3RRV0xsYjlHLXdrRmNaX0RtNklZZk9rbzVUUU1hemZiVlRYbjRFRTk4c1dZZFJuUkxtT1ZrZnNVZCZfbmNfb2hjPXZEdVlEd1hFX0RrUTdrTnZ3RWdUMFdnJl9uY19naWQ9Wmh0cG5SaVBEN1NmUjhIZFF0OUt5ZyZlZG09QVBVODlGQUFBQUFBJmNjYj03LTUmb2g9MDBfQWZtRzdGOUZ1SG5OalpDN3ZleVJtX0xsME1iZW1XZFNYR3BWMWpUS0ZXWm9IdyZvZT02QTNFQTIyMSZfbmNfc2lkPWJjMGMyYw==&h=d7fbf4d62ba36fc6d2dc85d8dbb58aac']},
+  'angel.blendzz310':{pfp:'',imgs:[]},
+};
+
 window.openBarberPage = function(handle) {
   var b = null;
   for (var i=0;i<BARBERS.length;i++) { if (BARBERS[i].handle===handle) { b=BARBERS[i]; break; } }
   if (!b) return;
 
-  var realPosts = (b.posts||[]).filter(function(u){ return u && u.indexOf('instagram.com')>-1; });
+  var imgData = BARBER_IMGS[handle] || {pfp:'',imgs:[]};
+  var imgs = imgData.imgs || [];
 
   var workHTML = '';
-  if (realPosts.length > 0) {
-    workHTML = '<div class="bph-work-title">RECENT WORK</div><div class="bph-embed-grid" id="bph-embeds-' + handle + '">';
-    realPosts.forEach(function(url){
-      var clean = url.split('?')[0].replace(/\/$/, '');
-      workHTML += '<blockquote class="instagram-media" data-instgrm-permalink="' + clean + '/" data-instgrm-version="14" style="background:#1E1E1E;border:1px solid rgba(255,215,0,.1);margin:0;padding:0;width:100%;min-width:100%"></blockquote>';
+  if (imgs.length > 0) {
+    workHTML = '<div class="bph-work-title">RECENT WORK</div><div class="bph-photo-grid">';
+    imgs.forEach(function(url){
+      var proxied = 'https://images.weserv.nl/?url=' + encodeURIComponent(url) + '&w=640&output=jpg';
+      workHTML += '<a href="https://www.instagram.com/' + handle + '/" target="_blank" rel="noopener" class="bph-photo-cell">' +
+        '<img src="' + proxied + '" alt="@' + handle + ' work" loading="lazy" onerror="this.parentElement.style.display=\'none\'">' +
+        '</a>';
     });
     workHTML += '</div>';
   } else {
@@ -989,6 +1009,11 @@ window.openBarberPage = function(handle) {
     workHTML += '</div>';
   }
 
+  var proxiedPfp = imgData.pfp ? 'https://images.weserv.nl/?url=' + encodeURIComponent(imgData.pfp) + '&w=300&output=jpg' : '';
+  var avatarHTML = proxiedPfp
+    ? '<img src="' + proxiedPfp + '" alt="@' + handle + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display=\'none\'">'
+    : '<div class="bph-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="0.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>';
+
   var statsHTML = b.followers
     ? '<div class="bph-stats"><div><div class="bph-stat-n">' + b.followers + '</div><div class="bph-stat-l">Followers</div></div><div><div class="bph-stat-n">502</div><div class="bph-stat-l">Shop</div></div></div>'
     : '<div class="bph-stats"><div><div class="bph-stat-n">502</div><div class="bph-stat-l">Shop</div></div></div>';
@@ -1000,11 +1025,7 @@ window.openBarberPage = function(handle) {
   var content = document.getElementById('bioPanelContent');
   content.innerHTML =
     '<div class="bph-hero rv">' +
-      '<div class="bph-avatar">' +
-        '<div class="bph-avatar-placeholder">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="0.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
-        '</div>' +
-      '</div>' +
+      '<div class="bph-avatar">' + avatarHTML + '</div>' +
       '<div class="bph-meta">' +
         '<div class="bph-handle">@' + b.handle + '</div>' +
         '<h1 class="bph-name">' + b.name.toUpperCase() + '</h1>' +
@@ -1016,7 +1037,7 @@ window.openBarberPage = function(handle) {
           '<a href="https://www.instagram.com/' + handle + '/" target="_blank" rel="noopener" class="bph-ig-btn">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="white" stroke="none"/></svg>' +
             'Follow on Instagram</a>' +
-          '<button class="bph-book-btn" onclick=\"switchTab(\'book\')\" >Book Now</button>' +
+          '<button class="bph-book-btn" onclick="switchTab(\'book\')" >Book Now</button>' +
         '</div>' +
       '</div>' +
     '</div>' +
@@ -1027,10 +1048,6 @@ window.openBarberPage = function(handle) {
     '</div>';
 
   switchTab('bio');
-
-  setTimeout(function(){
-    if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
-  }, 400);
 };
 
 /* ════════════ INIT HOME PANEL REVEALS ════════════ */
@@ -1040,292 +1057,51 @@ document.addEventListener('DOMContentLoaded', function() {
     home.querySelectorAll('.rv').forEach(function(el) { el.classList.add('on'); });
   }
 });
-
-/* ════════════ 3D SCENE ════════════ */
 </script>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 window.initAtm = function() {
-  if (atmInited) return; atmInited = true;
-
-  const canvas = document.getElementById('atm-canvas');
-  const card   = canvas.parentElement;
-  const W = () => card.clientWidth  || 800;
-  const H = () => canvas.clientHeight || 460;
-
-  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setSize(W(), H());
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.6;
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-
+  const el = document.getElementById('atmCanvas');
+  if (!el) return;
+  atmInited = true;
+  const W=()=>el.clientWidth, H=()=>el.clientHeight;
+  const renderer = new THREE.WebGLRenderer({canvas:el,antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(W(),H());
+  renderer.shadowMap.enabled=true;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x111111);
-  scene.fog = new THREE.Fog(0x111111, 14, 28);
-
-  const cam = new THREE.PerspectiveCamera(52, W()/H(), 0.1, 40);
-  cam.position.set(0, 1.95, 7.2);
-  cam.lookAt(0, 1.4, 0);
-
-  // ── HELPERS ──
-  const mat = (c, r=0.5, m=0, emC=null, emI=0) => {
-    const o = new THREE.MeshStandardMaterial({color:c, roughness:r, metalness:m});
-    if (emC) { o.emissive=new THREE.Color(emC); o.emissiveIntensity=emI; }
-    return o;
-  };
-  const add = (geo, material, x=0, y=0, z=0, rx=0, ry=0, rz=0) => {
-    const m = new THREE.Mesh(geo, material);
-    m.position.set(x,y,z); m.rotation.set(rx,ry,rz);
-    m.castShadow=true; m.receiveShadow=true; scene.add(m); return m;
-  };
-  const group = () => { const g=new THREE.Group(); scene.add(g); return g; };
-  const gadd = (g,geo,mat,x=0,y=0,z=0,rx=0,ry=0,rz=0) => {
-    const m=new THREE.Mesh(geo,mat);
-    m.position.set(x,y,z); m.rotation.set(rx,ry,rz);
-    m.castShadow=true; m.receiveShadow=true; g.add(m); return m;
-  };
-
-  // ── CANVAS TEXTURE HELPERS ──
-  const makeTex = (fn, w=256, h=256) => {
-    const c=document.createElement('canvas'); c.width=w; c.height=h;
-    const ctx=c.getContext('2d'); fn(ctx,w,h);
-    const t=new THREE.CanvasTexture(c); return t;
-  };
-
-  // Jersey texture — looks like a real hung jersey
-  const jerseyTex = (num, color, accent) => makeTex((ctx,w,h) => {
-    // Background jersey fabric
-    ctx.fillStyle = color;
-    ctx.fillRect(0,0,w,h);
-    // Shoulder seam
-    ctx.strokeStyle = accent;
-    ctx.lineWidth = 6;
-    ctx.beginPath(); ctx.moveTo(0,h*0.28); ctx.lineTo(w*0.32,h*0.18); ctx.lineTo(w*0.68,h*0.18); ctx.lineTo(w,h*0.28); ctx.stroke();
-    // Side seams
-    ctx.lineWidth = 4;
-    ctx.beginPath(); ctx.moveTo(w*0.12,h*0.18); ctx.lineTo(w*0.08,h); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w*0.88,h*0.18); ctx.lineTo(w*0.92,h); ctx.stroke();
-    // Number
-    ctx.fillStyle = accent;
-    ctx.font = `bold ${Math.floor(h*0.42)}px Arial Black, sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(num, w*0.5, h*0.58);
-    // Collar
-    ctx.strokeStyle = accent; ctx.lineWidth = 8;
-    ctx.beginPath(); ctx.arc(w*0.5, h*0.1, w*0.13, 0.3, Math.PI-0.3); ctx.stroke();
-  }, 256, 320);
-
-  // Mirror surface — slightly reflective blue-gray
-  const mirrorTex = makeTex((ctx,w,h) => {
-    const g = ctx.createLinearGradient(0,0,w,h);
-    g.addColorStop(0,'#6A8099'); g.addColorStop(0.4,'#8FA4BB'); g.addColorStop(0.7,'#7A95AA'); g.addColorStop(1,'#5A7080');
-    ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-    // Subtle vertical reflection streak
-    ctx.fillStyle='rgba(255,255,255,0.08)';
-    ctx.fillRect(w*0.35,0,w*0.08,h);
-    ctx.fillStyle='rgba(255,255,255,0.04)';
-    ctx.fillRect(w*0.6,0,w*0.04,h);
-  }, 128, 256);
-
-  // Wood countertop texture
-  const woodTex = makeTex((ctx,w,h) => {
-    ctx.fillStyle='#7A5C35'; ctx.fillRect(0,0,w,h);
-    ctx.strokeStyle='rgba(0,0,0,0.18)'; ctx.lineWidth=1.5;
-    for(let y=8;y<h;y+=18){ ctx.beginPath(); ctx.moveTo(0,y+Math.sin(y)*2); ctx.lineTo(w,y+Math.cos(y*0.7)*2); ctx.stroke(); }
-  }, 256, 64);
-
-  // Floor plank texture
-  const floorTex = makeTex((ctx,w,h) => {
-    ctx.fillStyle='#C4B09A'; ctx.fillRect(0,0,w,h);
-    ctx.strokeStyle='rgba(0,0,0,0.12)'; ctx.lineWidth=1;
-    for(let y=0;y<h;y+=24){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
-    for(let i=0;i<8;i++){ ctx.strokeStyle='rgba(0,0,0,0.06)'; ctx.beginPath(); ctx.moveTo(i*40+Math.random()*10,0); ctx.lineTo(i*40+Math.random()*10,h); ctx.stroke(); }
-  }, 512, 128);
-  floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
-  floorTex.repeat.set(8, 4);
-
-  // ── MATERIALS ──
-  const wallM    = mat(0x252525, 0.95, 0.0);
-  const floorM   = new THREE.MeshStandardMaterial({map:floorTex, roughness:0.42, metalness:0.03});
-  const ceilM    = mat(0xE8E8E8, 0.88, 0, 0xFFFFFF, 0.08);
-  const goldM    = mat(0xFFCC00, 0.08, 0.95);
-  const goldDimM = mat(0xDAA520, 0.12, 0.9);
-  const blackM   = mat(0x111111, 0.72, 0.04);
-  const leatherM = mat(0x0D0D0D, 0.82, 0.0);
-  const woodTopM = new THREE.MeshStandardMaterial({map:woodTex, roughness:0.65, metalness:0.02});
-  const chromeM  = mat(0xE0DDD8, 0.06, 0.97);
-  const cabinetM = mat(0x181818, 0.58, 0.22);
-
-  // ── ROOM ──
-  // Floor with texture
-  add(new THREE.PlaneGeometry(16,18), floorM, 0,0,0,-Math.PI/2);
-  // Ceiling bright white
-  add(new THREE.PlaneGeometry(16,18), ceilM, 0,6.2,0, Math.PI/2);
-  // Back wall
-  add(new THREE.PlaneGeometry(16,7.5), wallM, 0,3.5,-6.5);
-  // Side walls
-  add(new THREE.PlaneGeometry(18,7.5), wallM,-7,3.5,0, 0, Math.PI/2);
-  add(new THREE.PlaneGeometry(18,7.5), wallM, 7,3.5,0, 0,-Math.PI/2);
-  // Baseboard trim — gold accent strip at wall base
-  add(new THREE.BoxGeometry(16,0.08,0.04), goldDimM, 0,0.04,-6.48);
-  add(new THREE.BoxGeometry(0.04,0.08,18), goldDimM,-6.98,0.04,0);
-  add(new THREE.BoxGeometry(0.04,0.08,18), goldDimM, 6.98,0.04,0);
-
-  // ── CEILING LED TRACK SYSTEM ──
-  // Main track rail
-  add(new THREE.BoxGeometry(12,0.05,0.09), chromeM, 0,6.04,-0.5);
-  add(new THREE.BoxGeometry(12,0.05,0.09), chromeM, 0,6.04,-3.5);
-  const goldLights = [];
-  [-4.5,-2.2,0,2.2,4.5].forEach(x => {
-    [-0.5,-3.5].forEach(z => {
-      add(new THREE.CylinderGeometry(0.018,0.018,0.18,8), chromeM, x,5.92,z);
-      const bulbM = mat(0xFFF8E0,0.1,0.1,0xFFF8DC,5.0);
-      add(new THREE.SphereGeometry(0.06,10,10), bulbM, x,5.78,z);
-      const pl = new THREE.PointLight(0xFFFAE0, 2.0, 5);
-      pl.position.set(x,5.5,z); scene.add(pl);
-      goldLights.push(pl);
+  scene.background = new THREE.Color(0x0D0D0D);
+  scene.fog = new THREE.FogExp2(0x0D0D0D, 0.045);
+  const cam = new THREE.PerspectiveCamera(60,W()/H(),0.1,100);
+  cam.position.set(0,2.2,5.5);
+  cam.lookAt(0,1.8,0);
+  // Lighting
+  scene.add(new THREE.AmbientLight(0x1a1200,1.2));
+  const sun = new THREE.DirectionalLight(0xfff5cc,2.2);
+  sun.position.set(3,8,4); sun.castShadow=true; scene.add(sun);
+  [[-6,4,-4],[6,4,-4],[0,4,2]].forEach(([x,y,z])=>{
+    const sp = new THREE.PointLight(0xFFD700,1.8,14); sp.position.set(x,y,z); scene.add(sp);
+  });
+  const mat=(color,rough=0.6,metal=0.1)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+  const add=(geo,m,x,y,z,ry=0)=>{ const mesh=new THREE.Mesh(geo,m); mesh.position.set(x,y,z); mesh.rotation.y=ry; mesh.castShadow=true; mesh.receiveShadow=true; scene.add(mesh); return mesh; };
+  // Walls, floor, ceiling
+  const wallM=mat(0x2A2A2A,0.9,0.05), floorM=mat(0xB8B0A4,0.95,0.0), ceilM=mat(0xF0EEE8,0.85,0.0);
+  add(new THREE.PlaneGeometry(16,12),wallM, 0,3,-7);
+  add(new THREE.PlaneGeometry(8,12),wallM,-8,3,0,Math.PI/2);
+  add(new THREE.PlaneGeometry(8,12),wallM,8,3,0,-Math.PI/2);
+  const floorMesh=new THREE.Mesh(new THREE.PlaneGeometry(16,14),floorM);
+  floorMesh.rotation.x=-Math.PI/2; floorMesh.receiveShadow=true; scene.add(floorMesh);
+  add(new THREE.PlaneGeometry(16,14),ceilM,0,7,0, Math.PI);
+  // Gold trim
+  const goldM=mat(0xFFD700,0.15,0.9), goldDimM=mat(0xB8960C,0.3,0.85), cabinetM=mat(0x111111,0.7,0.3), leatherM=mat(0x0A0A0A,0.85,0.05);
+  // Mirror frames
+  [-4.5,0,4.5].forEach(x=>{
+    add(new THREE.BoxGeometry(2.1,2.8,0.05),mat(0x888880,0.1,0.95),x,3.8,-6.96);
+    [[2.1,0.09,0.5],[2.1,0.09,0.5],[0.09,2.8,0.5],[0.09,2.8,0.5]].forEach(([w,h,d],i)=>{
+      const fx=i<2?0:(i===2?-1.05:1.05), fy=i===0?2.45:i===1?5.15:3.8;
+      add(new THREE.BoxGeometry(w,h,d),goldM,x+(i<2?0:fx),fy+(i<2?(i===0?0:2.7):0),-6.73);
     });
   });
-
-  // ── AMBIENT + KEY LIGHTING ──
-  scene.add(new THREE.AmbientLight(0xFFFFFF, 0.38));
-  const key = new THREE.DirectionalLight(0xFFF5E0, 2.2);
-  key.position.set(2,9,4); key.castShadow=true;
-  key.shadow.mapSize.set(2048,2048);
-  key.shadow.camera.near=0.5; key.shadow.camera.far=30;
-  key.shadow.camera.left=-10; key.shadow.camera.right=10;
-  key.shadow.camera.top=10; key.shadow.camera.bottom=-10;
-  scene.add(key);
-
-  // Gold rim lights from mirror area
-  const goldRim = (x,y,z) => { const l=new THREE.PointLight(0xFFD700,2.8,6); l.position.set(x,y,z); scene.add(l); return l; };
-  const gr1=goldRim(-2.6,3.2,-3.5), gr2=goldRim(0,3.2,-3.5), gr3=goldRim(2.6,3.2,-3.5);
-  const goldGlows = [gr1,gr2,gr3];
-
-  // ── MIRROR STATIONS (black cabinet + wood top + thick gold mirror) ──
-  const makeStation = (sx) => {
-    const g = new THREE.Group(); g.position.set(sx,0,-4.5); scene.add(g);
-    // Black tool cabinet body
-    gadd(g, new THREE.BoxGeometry(1.7,1.0,0.58), cabinetM, 0,0.5,0);
-    // Cabinet drawer grooves
-    for(let dy=0.1;dy<0.9;dy+=0.165){
-      gadd(g, new THREE.BoxGeometry(1.68,0.012,0.006), mat(0x2A2A2A,0.4,0.3), 0,dy,0.292);
-      gadd(g, new THREE.BoxGeometry(0.18,0.012,0.006), mat(0x444,0.4,0.3), 0,dy+0.001,0.292);
-    }
-    // Drawer handles — small gold bars
-    for(let dy=0.1;dy<0.9;dy+=0.165){
-      gadd(g, new THREE.CylinderGeometry(0.01,0.01,0.14,8), goldM, 0,dy+0.04,0.298, Math.PI/2);
-    }
-    // Wood countertop
-    gadd(g, new THREE.BoxGeometry(1.75,0.07,0.64), woodTopM, 0,1.04,0.02);
-    // Counter lip (gold edge)
-    gadd(g, new THREE.BoxGeometry(1.76,0.025,0.02), goldDimM, 0,1.008,0.32);
-
-    // THICK GOLD MIRROR FRAME — like real shop
-    // Outer frame
-    gadd(g, new THREE.BoxGeometry(1.42,2.1,0.075), goldM, 0,2.25,-0.22);
-    // Mirror glass inset (slightly recessed)
-    const mirM = new THREE.MeshStandardMaterial({map:mirrorTex,roughness:0.03,metalness:0.95,envMapIntensity:1.2});
-    gadd(g, new THREE.BoxGeometry(1.16,1.82,0.018), mirM, 0,2.24,-0.148);
-    // Frame inner bevel shadow
-    gadd(g, new THREE.BoxGeometry(1.28,1.94,0.01), mat(0xCC9900,0.2,0.8), 0,2.25,-0.167);
-    // Frame top/bottom decorative bars
-    gadd(g, new THREE.BoxGeometry(1.42,0.09,0.08), goldM, 0,3.32,-0.22);
-    gadd(g, new THREE.BoxGeometry(1.42,0.09,0.08), goldM, 0,1.19,-0.22);
-    // Frame side bars
-    gadd(g, new THREE.BoxGeometry(0.09,2.1,0.08), goldM,-0.665,2.25,-0.22);
-    gadd(g, new THREE.BoxGeometry(0.09,2.1,0.08), goldM, 0.665,2.25,-0.22);
-
-    // Tool bottles on counter (varied heights/colors)
-    const bottles = [[-0.55,1.12,0.1,0xFFD700,0.16,0.26],[-0.38,1.10,0.1,0x111111,0.14,0.22],
-                     [-0.22,1.09,0.1,0xEEEEEE,0.035,0.20],[0,1.10,0.1,0xB8943A,0.04,0.22],
-                     [0.18,1.11,0.1,0x333333,0.038,0.24],[0.34,1.10,0.1,0x8B0000,0.036,0.20]];
-    bottles.forEach(([bx,by,bz,c,r,h]) => {
-      gadd(g, new THREE.CylinderGeometry(r,r*1.1,h,10), mat(c,0.3,0.5), bx,by+(h/2),bz);
-      gadd(g, new THREE.CylinderGeometry(r*0.4,r*0.4,0.04,8), mat(0xCCCCCC,0.2,0.7), bx,by+h+0.005,bz);
-    });
-    // White towel roll
-    gadd(g, new THREE.CylinderGeometry(0.058,0.058,0.18,12), mat(0xF0F0F0,0.85), 0.5,1.09,0.12, Math.PI/2);
-    // Clippers hanging (dark gray)
-    gadd(g, new THREE.BoxGeometry(0.06,0.19,0.04), mat(0x2A2A2A,0.5,0.3), 0.55,1.14,0.12);
-    gadd(g, new THREE.BoxGeometry(0.055,0.19,0.04), mat(0x1A1A1A,0.5,0.3), 0.63,1.13,0.12);
-  };
-  makeStation(-2.6); makeStation(0); makeStation(2.6);
-
-  // ── BARBER CHAIRS — premium black leather + ornate gold frame ──
-  const makeChair = (cx) => {
-    const g = new THREE.Group(); g.position.set(cx,0,1.1); scene.add(g);
-    // 5-star gold base
-    for(let i=0;i<5;i++){
-      const a=i*Math.PI*2/5;
-      const bx=Math.cos(a)*0.42, bz=Math.sin(a)*0.42;
-      gadd(g, new THREE.BoxGeometry(0.09,0.045,0.46), goldM, bx*0.5,0.022,bz*0.5, 0,a,0);
-      // Caster bump
-      gadd(g, new THREE.SphereGeometry(0.05,8,6), mat(0x222222,0.6), bx,0.05,bz);
-    }
-    // Center hub
-    gadd(g, new THREE.CylinderGeometry(0.085,0.085,0.065,16), goldM, 0,0.033,0);
-    // Hydraulic column — gold
-    gadd(g, new THREE.CylinderGeometry(0.095,0.115,1.08,14), goldM, 0,0.575,0);
-    // Seat plate — gold
-    gadd(g, new THREE.CylinderGeometry(0.42,0.42,0.055,22), goldM, 0,1.13,0);
-    // Decorative torus ring
-    gadd(g, new THREE.TorusGeometry(0.43,0.022,8,36), goldM, 0,1.16,0, Math.PI/2);
-    // Seat cushion — thick black leather
-    gadd(g, new THREE.BoxGeometry(0.78,0.14,0.72), leatherM, 0,1.22,0.02);
-    // Seat edge piping (gold)
-    gadd(g, new THREE.BoxGeometry(0.80,0.04,0.005), goldDimM, 0,1.175,0.362);
-    // Backrest — black with slight recline
-    gadd(g, new THREE.BoxGeometry(0.74,0.95,0.14), leatherM, 0,1.72,-0.34, 0.12);
-    // Backrest gold side rails
-    gadd(g, new THREE.BoxGeometry(0.04,0.95,0.05), goldM,-0.39,1.72,-0.3, 0.12);
-    gadd(g, new THREE.BoxGeometry(0.04,0.95,0.05), goldM, 0.39,1.72,-0.3, 0.12);
-    // Backrest top bar
-    gadd(g, new THREE.BoxGeometry(0.76,0.04,0.07), goldM, 0,2.17,-0.26, 0.12);
-    // Headrest — black padded
-    gadd(g, new THREE.BoxGeometry(0.48,0.26,0.11), leatherM, 0,2.28,-0.36, 0.1);
-    gadd(g, new THREE.BoxGeometry(0.50,0.005,0.005), goldDimM, 0,2.42,-0.31);
-    // Armrests — gold chrome rods + black pad
-    [-0.44,0.44].forEach(ax => {
-      gadd(g, new THREE.CylinderGeometry(0.025,0.025,0.32,10), goldM, ax,1.32, 0.14, 0,0,Math.PI/2+0.15);
-      gadd(g, new THREE.BoxGeometry(0.09,0.055,0.54), goldM, ax,1.19,-0.02);
-      gadd(g, new THREE.BoxGeometry(0.085,0.04,0.5), leatherM, ax,1.225,-0.02);
-    });
-    // Footrest — gold
-    gadd(g, new THREE.BoxGeometry(0.7,0.06,0.3), goldM, 0,0.65,0.42);
-    gadd(g, new THREE.BoxGeometry(0.72,0.025,0.005), goldM, 0,0.625,0.57);
-  };
-  makeChair(-2.6); makeChair(0); makeChair(2.6);
-
-  // ── BARBER POLES (left/right corners) ──
-  const makePole = (px) => {
-    const g = new THREE.Group(); g.position.set(px,0,-3.5); scene.add(g);
-    // Base + top cap
-    gadd(g, new THREE.CylinderGeometry(0.065,0.07,0.12,14), chromeM, 0,0.06,0);
-    gadd(g, new THREE.SphereGeometry(0.075,12,8), chromeM, 0,2.6,0);
-    // Outer chrome shell
-    gadd(g, new THREE.CylinderGeometry(0.058,0.058,2.5,14), chromeM, 0,1.25,0);
-    // Red stripe
-    const redPole = new THREE.Mesh(new THREE.CylinderGeometry(0.052,0.052,2.4,14), mat(0xCC2222,0.4));
-    redPole.position.y=1.2; g.add(redPole);
-    // White and blue stripes
-    [0,0.7,1.4].forEach(py => {
-      gadd(g, new THREE.CylinderGeometry(0.054,0.054,0.22,14), mat(0xEEEEEE,0.5), 0,py+0.36,0);
-      gadd(g, new THREE.CylinderGeometry(0.054,0.054,0.22,14), mat(0x1155BB,0.5), 0,py+0.1,0);
-    });
-    // Glass cylinder (transparent)
-    const glass = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.062,0.062,2.5,14,1,true),
-      new THREE.MeshStandardMaterial({color:0xCCEEFF,transparent:true,opacity:0.14,roughness:0,metalness:0.1,side:THREE.DoubleSide})
-    ); glass.position.y=1.25; g.add(glass);
-    // Light glow
-    const pl = new THREE.PointLight(0xFFDD44, 0.9, 2.5); pl.position.set(0,1.3,0.18); g.add(pl);
-    return {g, redPole};
-  };
   const pole1=makePole(-5.8), pole2=makePole(5.8);
 
   // ── JERSEYS ON WALL (canvas texture, framed, realistic) ──
@@ -1495,5 +1271,333 @@ window.initAtm = function() {
 </script>
 
 <script async src="//www.instagram.com/embed.js"></script>
-</body>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
 </html>
