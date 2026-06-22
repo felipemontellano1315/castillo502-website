@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Castillo 502 Barbershop — Lawndale, CA</title>
+<meta name="description" content="Castillo 502 Barbershop — South Bay's newest barbershop. 15733 Hawthorne Blvd #104, Lawndale CA."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* REAL SHOP COLORS */
+  --black:#0D0D0D;
+  --charcoal:#1E1E1E;
+  --wall:#2A2A2A;       /* actual wall color */
+  --surface:#252525;
+  --elevated:#303030;
+  --border:rgba(255,215,0,.12);
+  --border-hi:rgba(255,215,0,.3);
+
+  /* GOLD — bright like the real chair frames */
+  --gold:#FFD700;
+  --gold-hi:#FFE44D;
+  --gold-dim:#B8960C;
+  --gold-glow:rgba(255,215,0,.18);
+  --gold-pale:rgba(255,215,0,.06);
+
+  --white:#F5F5F5;
+  --cream:#EEE8D8;
+  --muted:rgba(245,245,245,.45);
+  --dimmer:rgba(245,245,245,.2);
+
+  --ease:cubic-bezier(.4,0,.2,1);
+  --eout:cubic-bezier(.16,1,.3,1);
+  --ff:'Bebas Neue',sans-serif;
+  --fb:'Inter',sans-serif;
+  --tab-h:58px;
+}
+
+html,body{height:100%;overflow:hidden}
+body{background:var(--black);color:var(--white);font-family:var(--fb);font-weight:400;line-height:1.6;overflow:hidden}
+::selection{background:var(--gold);color:var(--black)}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ════════════ TEAM GRID ════════════ */
+.team-shell{padding:2.5rem 2.5rem 3rem;max-width:1400px;margin:0 auto}
+.team-header{margin-bottom:2.5rem}
+.team-sub{font-size:.88rem;color:var(--muted);max-width:520px;margin-top:.75rem;line-height:1.7}
+
+/* Barber cards grid */
+.barbers-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1.2rem;
+  margin-bottom:4rem;
+}
+.barber-card{
+  background:var(--charcoal);
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:all .25s var(--ease);
+  position:relative;
+  overflow:hidden;
+}
+.barber-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,215,0,.06),transparent);
+  opacity:0;transition:opacity .25s;
+}
+.barber-card:hover{border-color:var(--border-hi);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,215,0,.15)}
+.barber-card:hover::before{opacity:1}
+.bc-photo{
+  width:100%;aspect-ratio:1;
+  background:var(--wall);
+  overflow:hidden;position:relative;
+}
+.bc-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s var(--eout)}
+.barber-card:hover .bc-photo img{transform:scale(1.06)}
+.bc-photo-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--wall),var(--charcoal));
+}
+.bc-photo-placeholder svg{opacity:.18}
+.bc-number{
+  position:absolute;top:.6rem;left:.7rem;
+  font-family:var(--ff);font-size:2.8rem;line-height:1;
+  color:rgba(255,215,0,.08);pointer-events:none;
+}
+.bc-info{padding:1rem 1.1rem 1.2rem}
+.bc-name{font-family:var(--ff);font-size:1.25rem;letter-spacing:.03em;color:var(--white);margin-bottom:.25rem;line-height:1.1}
+.bc-handle{font-size:.65rem;font-weight:600;letter-spacing:.1em;color:var(--gold);margin-bottom:.5rem}
+.bc-spec{font-size:.72rem;color:var(--muted);line-height:1.5;margin-bottom:.8rem}
+.bc-cta{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--border);
+  padding:.4rem .85rem;transition:all .2s;
+}
+.bc-cta:hover{background:var(--gold);color:var(--black);border-color:var(--gold)}
+
+/* ════════════ BIO PANEL (full barber page) ════════════ */
+.bio-panel-shell{
+  height:100%;overflow-y:auto;
+  padding:2rem 2.5rem 4rem;
+  max-width:1200px;margin:0 auto;
+}
+.bio-panel-back{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;margin-bottom:2.5rem;
+  transition:color .2s;border:1px solid var(--border);padding:.5rem 1rem;
+}
+.bio-panel-back:hover{color:var(--gold);border-color:var(--border-hi)}
+
+/* Bio page hero */
+.bph-hero{display:grid;grid-template-columns:320px 1fr;gap:3rem;align-items:start;margin-bottom:3rem}
+.bph-avatar{
+  width:100%;aspect-ratio:1;
+  background:var(--wall);overflow:hidden;border:2px solid var(--border-hi);
+  position:relative;
+}
+.bph-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.bph-avatar-placeholder{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--wall) 0%,var(--charcoal) 100%);
+}
+.bph-avatar-placeholder svg{opacity:.15;width:80px;height:80px}
+.bph-meta{}
+.bph-handle{font-size:.7rem;font-weight:700;letter-spacing:.18em;color:var(--gold);margin-bottom:.5rem}
+.bph-name{font-family:var(--ff);font-size:clamp(2.8rem,5vw,4.5rem);letter-spacing:.02em;line-height:.95;color:var(--white);margin-bottom:1rem}
+.bph-spec{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:1.4rem;border-left:2px solid var(--gold);padding-left:1rem}
+.bph-stats{display:flex;gap:2rem;margin-bottom:1.8rem}
+.bph-stat-n{font-family:var(--ff);font-size:2rem;color:var(--gold);line-height:1}
+.bph-stat-l{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+.bph-btns{display:flex;gap:.7rem;flex-wrap:wrap}
+.bph-ig-btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+  padding:.65rem 1.4rem;text-decoration:none;transition:opacity .2s;border:none;
+}
+.bph-ig-btn:hover{opacity:.85}
+.bph-book-btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--black);background:var(--gold);
+  padding:.65rem 1.4rem;cursor:pointer;border:none;transition:background .2s;
+}
+.bph-book-btn:hover{background:var(--gold-hi)}
+
+/* Work grid */
+.bph-work-title{font-family:var(--ff);font-size:1.6rem;letter-spacing:.04em;color:var(--white);margin-bottom:1.2rem;padding-top:1rem;border-top:1px solid var(--border)}
+.bph-work-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:3px;
+  margin-bottom:2.5rem;
+}
+.bph-work-cell{
+  aspect-ratio:1;overflow:hidden;background:var(--wall);
+  position:relative;cursor:pointer;
+}
+.bph-work-cell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.bph-work-cell:hover img{transform:scale(1.08)}
+.bph-work-cell .bph-caption{
+  position:absolute;inset:0;background:rgba(0,0,0,.75);
+  display:flex;align-items:flex-end;padding:.7rem;
+  opacity:0;transition:opacity .2s;
+}
+.bph-work-cell:hover .bph-caption{opacity:1}
+.bph-caption p{font-size:.7rem;color:var(--white);line-height:1.4}
+.bph-embed-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1rem;margin-bottom:2.5rem;
+}
+.bph-placeholder-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:3px;margin-bottom:2.5rem;
+}
+.bph-ph-cell{
+  aspect-ratio:1;background:var(--wall);border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.5rem;cursor:pointer;text-decoration:none;transition:border-color .2s,background .2s;
+}
+.bph-ph-cell:hover{border-color:var(--border-hi);background:var(--surface)}
+.bph-ph-cell svg{opacity:.25}
+.bph-ph-cell span{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+@media(max-width:768px){
+  .bph-hero{grid-template-columns:1fr;gap:1.5rem}
+  .bph-avatar{max-width:220px}
+  .bph-work-grid,.bph-placeholder-grid{grid-template-columns:repeat(2,1fr)}
+  .barbers-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem}
+  .bio-panel-shell,.team-shell{padding:1.5rem 1.2rem 3rem}
+}
+
+/* ════════════ LAYOUT SHELL ════════════ */
+.shell{display:grid;grid-template-rows:auto var(--tab-h) 1fr;height:100vh;overflow:hidden;min-height:0}
+
+/* ── TOP BAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 2.5rem;
+  background:var(--black);
+  border-bottom:1px solid var(--border);
+}
+.topbar-logo{display:flex;align-items:center;gap:.75rem;cursor:pointer;text-decoration:none}
+.logo-badge{width:38px;height:38px;flex-shrink:0}
+.logo-name{font-family:var(--ff);font-size:1.3rem;letter-spacing:.06em;color:var(--white);line-height:1}
+.logo-name small{display:block;font-family:var(--fb);font-size:.54rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:.7rem}
+.topbar-ig{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--border);
+  padding:.42rem .9rem;transition:all .2s;text-decoration:none;
+}
+.topbar-ig:hover{color:var(--gold);border-color:var(--border-hi)}
+.topbar-book{
+  font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--black);background:var(--gold);
+  padding:.5rem 1.3rem;cursor:pointer;text-decoration:none;
+  border:none;transition:background .2s,box-shadow .2s;
+}
+.topbar-book:hover{background:var(--gold-hi);box-shadow:0 0 24px var(--gold-glow)}
+
+/* ── TAB BAR ── */
+.tabbar{
+  display:flex;align-items:stretch;
+  background:var(--charcoal);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;scrollbar-width:none;
+}
+.tabbar::-webkit-scrollbar{display:none}
+.tab{
+  display:flex;align-items:center;gap:.45rem;padding:0 1.8rem;
+  font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);background:transparent;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  white-space:nowrap;transition:color .2s,border-color .2s,background .2s;flex-shrink:0;
+}
+.tab .ti{font-size:.95rem;transition:transform .2s}
+.tab:hover{color:var(--white);background:rgba(255,215,0,.04)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab.active .ti{transform:scale(1.15)}
+
+/* ── PANELS ── */
+.panels{overflow:hidden;height:100%;min-height:0}
+.panel{
+  display:none;
+  width:100%;height:100%;
+  overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:thin;scrollbar-color:var(--elevated) transparent;
+}
+.panel.active{display:block}
+
+/* ════════════ SHARED ════════════ */
+.wrap{max-width:1240px;margin:0 auto;padding:0 2.5rem}
+.sec{padding:clamp(3.5rem,6vw,6rem) 0}
+.lbl{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.58rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.8rem;
+}
+.lbl::before{content:'';width:18px;height:1.5px;background:var(--gold)}
+.dsp{
+  font-family:var(--ff);
+  font-size:clamp(2.8rem,5.5vw,5.5rem);
+  letter-spacing:.03em;line-height:.88;color:var(--white);
+}
+.dsp .g{color:var(--gold)}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .75s var(--eout),transform .75s var(--eout)}
+.rv.on{opacity:1;transform:translateY(0)}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
+.panel.active .rv{opacity:1!important;transform:translateY(0)!important;transition:none!important}
+
+/* ════════════ HOME PANEL ════════════ */
+#panel-home{background:var(--black)}
+.home-wrap{position:relative;height:100%;display:flex;flex-direction:column}
+
+/* hero */
+.hero{
+  position:relative;flex:1;min-height:0;
+  display:flex;align-items:flex-end;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1800&auto=format&fit=crop&q=80') center/cover no-repeat;
+  filter:brightness(.28) contrast(1.1) saturate(.6);
+  transform:scale(1.04);animation:hzoom 10s ease-out forwards;
+}
+@keyframes hzoom{to{transform:scale(1)}}
+/* gold corner accents over photo */
+.hero-corner{position:absolute;width:28px;height:28px;pointer-events:none;z-index:2}
+.hero-corner.tl{top:1.5rem;left:1.5rem;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.hero-corner.tr{top:1.5rem;right:1.5rem;border-top:2px solid var(--gold);border-right:2px solid var(--gold)}
+.hero-corner.bl{bottom:0;left:1.5rem;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)}
+.hero-corner.br{bottom:0;right:1.5rem;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+
+.hero-content{
+  position:relative;z-index:3;
+  width:100%;padding:2.5rem 2.5rem;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;
+  background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.5) 50%,transparent 100%);
+}
+.hero-left{flex:1}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.9rem;
+}
+.hero-tag::before{content:'';width:22px;height:1px;background:var(--gold)}
+.hero-h1{
+  font-family:var(--ff);
+  font-size:clamp(4.5rem,11vw,10.5rem);
+  line-height:.85;letter-spacing:.02em;color:var(--white);
+}
+.hero-h1 .g{color:var(--gold);display:block}
+.hero-sub{
+  font-size:.92rem;color:var(--muted);
+  max-width:380px;margin-top:1.2rem;line-height:1.75;
+}
+.hero-actions{display:flex;gap:.7rem;margin-top:1.8rem;flex-wrap:wrap}
+
+.btn-gold{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--black);background:var(--gold);
+  padding:.88rem 1.8rem;cursor:pointer;text-decoration:none;border:none;
+  transition:background .2s,box-shadow .2s,transform .15s;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+}
+.btn-gold:hover{background:var(--gold-hi);box-shadow:0 0 35px rgba(255,215,0,.35);transform:translateY(-2px)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--white);background:transparent;
+  padding:.88rem 1.8rem;border:1px solid rgba(255,255,255,.2);
+  cursor:pointer;text-decoration:none;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  transition:border-color .2s,background .2s;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
+
+.hero-right{
+  flex-shrink:0;display:flex;flex-direction:column;
+  gap:1.6rem;align-items:flex-end;
+}
+.hstat{text-align:right}
+.hstat-n{font-family:var(--ff);font-size:2.8rem;color:var(--gold);line-height:1}
+.hstat-l{font-size:.55rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.1rem}
+.now-open{
+  background:var(--gold);color:var(--black);
+  font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  padding:.42rem 1rem;display:inline-block;
+  animation:gpulse 2.5s ease-in-out infinite;
+}
+@keyframes gpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,.45)}50%{box-shadow:0 0 0 10px rgba(255,215,0,0)}}
+
+/* bottom info strip */
+.home-strip{
+  background:var(--charcoal);
+  border-top:1px solid var(--border);
+  display:flex;
+}
+.hstrip-item{
+  flex:1;padding:1rem 1.6rem;
+  border-right:1px solid var(--border);
+  display:flex;align-items:center;gap:.75rem;
+}
+.hstrip-item:last-child{border-right:none}
+.hsi-icon{font-size:1rem;flex-shrink:0}
+.hsi-lbl{font-size:.54rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.hsi-val{font-size:.8rem;color:var(--white);margin-top:.1rem}
+.hsi-val a{color:var(--gold);transition:opacity .2s}.hsi-val a:hover{opacity:.75}
+
+/* ════════════ SERVICES PANEL ════════════ */
+#panel-services{background:var(--black)}
+.svc-shell{padding:3rem 2.5rem;max-width:1240px;margin:0 auto}
+.panel-head{margin-bottom:2.5rem;display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
+.svc-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+}
+.svc-card{
+  background:var(--charcoal);padding:2rem 1.8rem 1.8rem;
+  position:relative;overflow:hidden;
+  transition:background .3s;cursor:default;
+}
+.svc-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-hi));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--eout);
+}
+.svc-card:hover{background:var(--surface)}
+.svc-card:hover::before{transform:scaleX(1)}
+.svc-n{
+  font-family:var(--ff);font-size:4.5rem;
+  color:rgba(255,215,0,.06);line-height:1;
+  margin-bottom:.6rem;transition:color .3s;
+}
+.svc-card:hover .svc-n{color:rgba(255,215,0,.12)}
+.svc-ico{width:2.4rem;height:2.4rem;margin-bottom:1rem;color:var(--gold)}
+.svc-ico svg{width:100%;height:100%;stroke:var(--gold);fill:none}
+.svc-name{font-family:var(--ff);font-size:1.8rem;letter-spacing:.03em;color:var(--white);margin-bottom:.4rem}
+.svc-desc{font-size:.8rem;color:var(--muted);line-height:1.65;margin-bottom:1.2rem}
+.svc-price{
+  font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);border:1.5px solid var(--border-hi);
+  padding:.26rem .78rem;display:inline-block;
+  transition:background .2s,color .2s;
+}
+.svc-card:hover .svc-price{background:var(--gold);color:var(--black)}
+.svc-footer{
+  margin-top:2rem;padding:1.4rem 1.8rem;
+  background:var(--charcoal);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.svc-footer p{font-size:.82rem;color:var(--muted)}
+.svc-footer strong{color:var(--gold)}
+
+/* ════════════ TEAM PANEL ════════════ */
+#panel-team{background:var(--black)}
+.team-shell{padding:3rem 2.5rem;max-width:1240px;margin:0 auto}
+.team-top{display:grid;grid-template-columns:1fr 1.2fr;gap:4.5rem;align-items:center;margin-bottom:3rem}
+.team-photo-wrap{position:relative}
+.team-photo-wrap img{width:100%;aspect-ratio:4/5;object-fit:cover;filter:brightness(.9) contrast(1.05)}
+.team-gold-bar{position:absolute;top:0;left:0;width:3px;height:64px;background:var(--gold)}
+.team-badge{
+  position:absolute;bottom:0;right:0;
+  background:var(--gold);color:var(--black);
+  font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:.6rem 1.2rem;
+}
+.team-info .dsp{margin-bottom:.8rem}
+.flag-tag{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--border);
+  padding:.38rem .85rem;margin-bottom:1.6rem;
+}
+.team-p{font-size:.88rem;color:var(--muted);line-height:1.82;margin-bottom:.75rem}
+.team-p strong{color:var(--white);font-weight:600}
+.barbers-lbl{font-size:.56rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:1.6rem 0 .7rem}
+.barbers-wrap{display:flex;flex-wrap:wrap;gap:.38rem}
+.barber-pill{
+  font-size:.62rem;font-weight:500;letter-spacing:.03em;
+  color:var(--muted);border:1px solid var(--border);
+  padding:.28rem .7rem;cursor:pointer;
+  transition:all .2s;background:transparent;
+}
+.barber-pill:hover{color:var(--gold);border-color:var(--gold);background:var(--gold-pale)}
+
+/* 3D scene row */
+.team-3d-row{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center;margin-top:2rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.atm-card{
+  position:relative;
+  background:var(--charcoal);overflow:hidden;
+  border:1px solid var(--border);
+}
+/* corner marks */
+.atm-corner{position:absolute;width:16px;height:16px;pointer-events:none;z-index:10}
+.atm-corner.tl{top:0;left:0;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.atm-corner.tr{top:0;right:0;border-top:2px solid var(--gold);border-right:2px solid var(--gold)}
+.atm-corner.bl{bottom:0;left:0;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)}
+.atm-corner.br{bottom:0;right:0;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+#atm-canvas{display:block;width:100%;height:460px;cursor:crosshair}
+.atm-ui{
+  position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);
+  font-size:.54rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,215,0,.4);pointer-events:none;white-space:nowrap;
+}
+.atm-copy .lbl{margin-bottom:.6rem}
+.atm-copy h3{font-family:var(--ff);font-size:clamp(2rem,3.2vw,3rem);letter-spacing:.03em;color:var(--white);line-height:.95;margin-bottom:1rem}
+.atm-copy p{font-size:.86rem;color:var(--muted);line-height:1.78;margin-bottom:.75rem}
+.atm-copy p strong{color:var(--gold)}
+
+/* ════════════ BOOK PANEL ════════════ */
+#panel-book{background:var(--black)}
+.book-shell{padding:3rem 2.5rem;max-width:1240px;margin:0 auto}
+.book-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem}
+.book-steps{margin-top:1.8rem;display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.bstep{
+  background:var(--charcoal);padding:1.6rem 1.8rem;
+  display:flex;gap:1.2rem;position:relative;overflow:hidden;
+  transition:background .2s;
+}
+.bstep::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);transform:scaleY(0);transform-origin:bottom;
+  transition:transform .32s var(--eout);
+}
+.bstep:hover{background:var(--surface);transform:translateX(3px)}
+.bstep:hover::before{transform:scaleY(1)}
+.bstep[onclick]{cursor:pointer}
+.bstep-n{font-family:var(--ff);font-size:2.6rem;color:rgba(255,215,0,.12);line-height:1;flex-shrink:0;transition:color .2s}
+.bstep:hover .bstep-n{color:rgba(255,215,0,.25)}
+.bstep h4{font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:.3rem}
+.bstep p{font-size:.8rem;color:var(--muted);line-height:1.62}
+.book-btns{margin-top:1.6rem;display:flex;flex-direction:column;gap:.6rem}
+.bcta-main{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--black);background:var(--gold);
+  padding:1.05rem 2rem;text-decoration:none;
+  transition:background .2s,box-shadow .2s,transform .15s;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+}
+.bcta-main:hover{background:var(--gold-hi);transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,215,0,.25)}
+.bcta-sec{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--white);background:transparent;border:1px solid var(--border-hi);
+  padding:.9rem 2rem;text-decoration:none;
+  transition:all .2s;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+}
+.bcta-sec:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
+
+/* pay card */
+.pay-card{background:var(--charcoal);border:1px solid var(--border);overflow:hidden}
+.pay-card-hdr{
+  padding:1.2rem 1.6rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.75rem;
+}
+.pay-card-hdr h3{font-size:.95rem;font-weight:700;color:var(--white)}
+.pay-card-hdr p{font-size:.7rem;color:var(--muted);margin-top:.1rem}
+.pay-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:1.1rem 1.6rem;border-bottom:1px solid var(--border);
+  text-decoration:none;transition:background .18s;
+}
+.pay-row:last-child{border-bottom:none}
+.pay-row:hover{background:var(--surface)}
+.pay-logo{
+  width:40px;height:40px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0;
+}
+.pl-v{background:#008CFF}.pl-c{background:#00C244}.pl-z{background:#6D1ED4}.pl-s{background:#333}.pl-m{background:var(--elevated);color:var(--gold)}
+.pay-name{font-size:.87rem;font-weight:600;color:var(--white)}
+.pay-sub{font-size:.72rem;color:var(--muted)}
+.pay-chip{
+  font-size:.48rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--border-hi);
+  padding:.16rem .55rem;margin-left:auto;margin-right:.3rem;flex-shrink:0;
+}
+.pay-arr{color:var(--muted);font-size:.85rem;margin-left:auto;transition:transform .2s,color .2s}
+.pay-row:hover .pay-arr{transform:translateX(3px);color:var(--gold)}
+
+/* ════════════ VISIT PANEL ════════════ */
+#panel-visit{background:var(--black)}
+.visit-shell{padding:3rem 2.5rem;max-width:1240px;margin:0 auto}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem}
+.v-head{margin-bottom:1.4rem}
+.v-h2{font-family:var(--ff);font-size:clamp(2.5rem,4vw,4rem);letter-spacing:.03em;color:var(--white);line-height:.9;margin-bottom:1.2rem}
+.v-h2 .g{color:var(--gold)}
+.hours-tbl{width:100%;border-collapse:collapse}
+.hours-tbl tr{border-bottom:1px solid var(--border);transition:background .15s}
+.hours-tbl tr:hover{background:var(--surface)}
+.hours-tbl td{padding:.82rem 0;font-size:.84rem}
+.hours-tbl td:first-child{font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);width:42%}
+.hours-tbl td:last-child{color:var(--white)}
+.hours-tbl tr.today td{color:var(--gold)}
+.hours-tbl tr.today td:first-child::before{content:'● ';font-size:.45em;vertical-align:middle}
+.walk{font-size:.64rem;font-weight:500;letter-spacing:.1em;color:var(--muted);margin-top:1rem}
+.ci-list{margin-top:1rem;display:flex;flex-direction:column;gap:1rem}
+.ci-row{display:flex;align-items:flex-start;gap:1rem;text-decoration:none;transition:opacity .2s}
+.ci-row:hover{opacity:.8}
+.ci-icon{
+  width:40px;height:40px;flex-shrink:0;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  transition:border-color .2s,background .2s;
+}
+.ci-row:hover .ci-icon{border-color:var(--gold);background:var(--gold-pale)}
+.ci-lbl{font-size:.54rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.18rem}
+.ci-val{font-size:.86rem;color:var(--white)}
+.ci-val small{display:block;font-size:.74rem;color:var(--muted)}
+.maps-a{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin-top:.2rem;transition:opacity .2s;
+}
+.maps-a:hover{opacity:.7}
+.soc-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1.8rem}
+.soc-pill{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--border);
+  padding:.55rem 1rem;text-decoration:none;transition:all .2s;
+}
+.soc-pill:hover{color:var(--gold);border-color:var(--gold);background:var(--gold-pale)}
+.soc-pill.hi{color:var(--black);background:var(--gold);border-color:var(--gold)}
+.soc-pill.hi:hover{background:var(--gold-hi);border-color:var(--gold-hi)}
+.map-embed{margin-top:2rem;border:1px solid var(--border);overflow:hidden;background:var(--surface)}
+.map-embed iframe{width:100%;height:240px;border:none;filter:invert(90%) hue-rotate(180deg) brightness(.85) saturate(.8)}
+
+/* ════════════ RESPONSIVE ════════════ */
+@media(max-width:920px){
+  .topbar{padding:.75rem 1.2rem}
+  .tab{padding:0 1rem;font-size:.6rem}
+  .wrap,.svc-shell,.team-shell,.book-shell,.visit-shell{padding:2rem 1.2rem}
+  .hero-content{flex-direction:column;padding:2rem 1.2rem}
+  .hero-h1{font-size:clamp(3.8rem,16vw,7rem)}
+  .hero-right{flex-direction:row;justify-content:flex-start}
+  .home-strip{flex-direction:column}
+  .hstrip-item{border-right:none;border-bottom:1px solid var(--border)}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .team-top{grid-template-columns:1fr;gap:2.5rem}
+  .team-3d-row{grid-template-columns:1fr}
+  .book-grid{grid-template-columns:1fr;gap:3rem}
+  .visit-grid{grid-template-columns:1fr;gap:3rem}
+  #atm-canvas{height:320px}
+}
+@media(max-width:560px){
+  .svc-grid{grid-template-columns:1fr}
+  .topbar-ig{display:none}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ═══ TOP BAR ═══ -->
+<header class="topbar">
+  <a href="javascript:void(0)" onclick="switchTab('home')" class="topbar-logo">
+    <svg class="logo-badge" viewBox="0 0 38 38" fill="none">
+      <circle cx="19" cy="19" r="17.5" stroke="#FFD700" stroke-width="1.3"/>
+      <circle cx="19" cy="19" r="13.5" stroke="#FFD700" stroke-width=".5" opacity=".4"/>
+      <rect x="17.6" y="7" width="2.8" height="12.5" rx="1.4" fill="#FFD700" opacity=".18"/>
+      <rect x="17.6" y="7" width="2.8" height="12.5" rx="1.4" stroke="#FFD700" stroke-width=".75" fill="none"/>
+      <line x1="17.6" y1="9.8" x2="20.4" y2="9.8" stroke="#FFD700" stroke-width=".6" opacity=".65"/>
+      <line x1="17.6" y1="13"  x2="20.4" y2="13"  stroke="#FFD700" stroke-width=".6" opacity=".65"/>
+      <line x1="17.6" y1="16.2" x2="20.4" y2="16.2" stroke="#FFD700" stroke-width=".6" opacity=".65"/>
+      <circle cx="19" cy="6.5" r="1.4" fill="#FFD700"/>
+      <circle cx="19" cy="20" r="1.4" fill="#FFD700"/>
+      <line x1="9"  y1="26.5" x2="19" y2="19.5" stroke="#FFD700" stroke-width="1.4" stroke-linecap="round" opacity=".9"/>
+      <line x1="29" y1="26.5" x2="19" y2="19.5" stroke="#FFD700" stroke-width="1.4" stroke-linecap="round" opacity=".9"/>
+      <circle cx="7.8"  cy="28" r="2.2" stroke="#FFD700" stroke-width="1.1" fill="none" opacity=".85"/>
+      <circle cx="30.2" cy="28" r="2.2" stroke="#FFD700" stroke-width="1.1" fill="none" opacity=".85"/>
+      <circle cx="19" cy="19.5" r="1.1" fill="#FFD700"/>
+    </svg>
+    <div class="logo-name">Castillo 502<small>Lawndale · South Bay CA</small></div>
+  </a>
+  <div class="topbar-right">
+    <a href="https://www.instagram.com/castillo_502_barbershop" target="_blank" rel="noopener" class="topbar-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg> @castillo_502_barbershop</a>
+    <a href="javascript:void(0)" onclick="switchTab('book')" class="topbar-book">Book Now</a>
+  </div>
+</header>
+
+<!-- ═══ TAB BAR ═══ -->
+<nav class="tabbar" role="tablist">
+  <button class="tab active" data-tab="home"     onclick="switchTab('home')">    <span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</button>
+  <button class="tab"        data-tab="services" onclick="switchTab('services')"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></span>Services</button>
+  <button class="tab"        data-tab="team"     onclick="switchTab('team')">    <span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Team</button>
+  <button class="tab"        data-tab="book"     onclick="switchTab('book')">    <span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Book</button>
+  <button class="tab"        data-tab="visit"    onclick="switchTab('visit')">   <span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>Visit</button>
+</nav>
+
+<!-- ═══ PANELS ═══ -->
+<div class="panels">
+
+  <!-- HOME -->
+  <div class="panel active" id="panel-home">
+    <div class="home-wrap">
+      <div class="hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-corner tl"></div>
+        <div class="hero-corner tr"></div>
+        <div class="hero-corner bl"></div>
+        <div class="hero-corner br"></div>
+        <div class="hero-content">
+          <div class="hero-left">
+            <div class="hero-tag">South Bay · Est. 2026</div>
+            <h1 class="hero-h1">CASTILLO<span class="g">502</span></h1>
+            <p class="hero-sub">Brand new in Lawndale. Black &amp; gold chairs, sharp blades, and 11 barbers who take pride in every single cut. Walk-ins always welcome.</p>
+            <div class="hero-actions">
+              <a href="javascript:void(0)" onclick="switchTab('book')" class="btn-gold">Book Appointment</a>
+              <a href="javascript:void(0)" onclick="switchTab('services')" class="btn-ghost">View Services</a>
+            </div>
+          </div>
+          <div class="hero-right">
+            <div class="now-open">✦ Now Open · June 2026</div>
+            <div class="hstat"><div class="hstat-n">11</div><div class="hstat-l">Barbers</div></div>
+            <div class="hstat"><div class="hstat-n">6+</div><div class="hstat-l">Services</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="home-strip">
+        <div class="hstrip-item"><div class="hsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="hsi-lbl">Address</div><div class="hsi-val">15733 Hawthorne Blvd #104, Lawndale CA</div></div></div>
+        <div class="hstrip-item"><div class="hsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.59a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div><div><div class="hsi-lbl">Phone</div><div class="hsi-val"><a href="tel:3236056488">(323) 605-6488</a></div></div></div>
+        <div class="hstrip-item"><div class="hsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="hsi-lbl">Today</div><div class="hsi-val" id="todayHours">—</div></div></div>
+        <div class="hstrip-item"><div class="hsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="6" width="20" height="15" rx="2"/><circle cx="12" cy="13.5" r="3"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg></div><div><div class="hsi-lbl">Instagram</div><div class="hsi-val"><a href="https://www.instagram.com/castillo_502_barbershop" target="_blank" rel="noopener">@castillo_502_barbershop</a></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="panel" id="panel-services">
+    <div class="svc-shell">
+      <div class="panel-head">
+        <div class="rv">
+          <div class="lbl">What We Offer</div>
+          <h2 class="dsp">SERVICES<br><span class="g">&amp; PRICING</span></h2>
+        </div>
+        <p class="rv d2" style="font-size:.88rem;color:var(--muted);max-width:240px;line-height:1.72;font-style:italic">No rushing — you get the time you deserve in the chair.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card rv"><div class="svc-n">01</div><div class="svc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div><div class="svc-name">Fades</div><p class="svc-desc">Skin, low, mid, or high — clean fades that hold their edge. Our specialty.</p><span class="svc-price">from $28</span></div>
+        <div class="svc-card rv d1"><div class="svc-n">02</div><div class="svc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6v3H9z"/><path d="M10 5c-1 5-3.5 7-3.5 13a5.5 5.5 0 0 0 11 0C17.5 12 15 10 14 5"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg></div><div class="svc-name">Haircuts</div><p class="svc-desc">Classic or modern, scissor or clipper — shaped to you.</p><span class="svc-price">from $25</span></div>
+        <div class="svc-card rv d2"><div class="svc-n">03</div><div class="svc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M8 13c0 2 1.5 4 4 4s4-2 4-4"/></svg></div><div class="svc-name">Beard Trims</div><p class="svc-desc">Shape, line, edge. Clean and intentional, every time.</p><span class="svc-price">from $15</span></div>
+        <div class="svc-card rv d1"><div class="svc-n">04</div><div class="svc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L19 5"/><path d="M19 5h-5l-9 9 4 4 9-9V5z"/><line x1="14" y1="10" x2="17" y2="7"/></svg></div><div class="svc-name">Shaves</div><p class="svc-desc">Straight razor, hot towel, smooth finish. The real deal.</p><span class="svc-price">from $20</span></div>
+        <div class="svc-card rv d2"><div class="svc-n">05</div><div class="svc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="svc-name">Hair Designs</div><p class="svc-desc">Custom designs cut with precision. Bring a vision.</p><span class="svc-price">from $35</span></div>
+        <div class="svc-card rv d3"><div class="svc-n">06</div><div class="svc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L13.8 9.2 L20 11 L13.8 12.8 L12 19 L10.2 12.8 L4 11 L10.2 9.2 Z"/><path d="M5 3 L5.6 5.4 L8 6 L5.6 6.6 L5 9 L4.4 6.6 L2 6 L4.4 5.4 Z"/><path d="M19 15 L19.5 17 L21.5 17.5 L19.5 18 L19 20 L18.5 18 L16.5 17.5 L18.5 17 Z"/></svg></div><div class="svc-name">Waxing</div><p class="svc-desc">Nose, ears, brows — polish the whole look.</p><span class="svc-price">from $10</span></div>
+      </div>
+      <div class="svc-footer">
+        <p>Walk-ins welcome · Call <strong><a href="tel:3236056488" style="color:var(--gold)">(323) 605-6488</a></strong> or <strong style="cursor:pointer;text-decoration:underline" onclick="switchTab('book')">book online</strong></p>
+        <a href="javascript:void(0)" onclick="switchTab('book')" class="btn-gold" style="font-size:.62rem;padding:.7rem 1.4rem">Book Now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="panel" id="panel-team">
+    <div class="team-shell">
+
+      <!-- ── BARBERS GRID ── -->
+      <div class="team-header rv">
+        <div class="lbl">The Crew</div>
+        <h2 class="dsp">MEET THE<br><span class="g">BARBERS</span></h2>
+        <p class="team-sub">11 licensed barbers. Every style, every texture. Click any card to see their work.</p>
+      </div>
+
+      <div class="barbers-grid" id="barbersGrid">
+        <!-- cards injected by JS -->
+      </div>
+
+      <!-- ── INSIDE THE 502 ── -->
+      <div class="team-3d-row">
+        <div class="atm-card rv">
+          <canvas id="atm-canvas"></canvas>
+          <div class="atm-corner tl"></div><div class="atm-corner tr"></div>
+          <div class="atm-corner bl"></div><div class="atm-corner br"></div>
+          <div class="atm-ui">◀ Move Mouse to Look Around ▶</div>
+        </div>
+        <div class="atm-copy rv d2">
+          <div class="lbl">The Space</div>
+          <h3>INSIDE<br><span style="color:var(--gold)">THE 502</span></h3>
+          <p><strong>Dark walls. Gold frames. Black &amp; gold chairs.</strong> The real Castillo 502 — move your mouse to look around the shop.</p>
+          <p>Opened June 2026 at 15733 Hawthorne Blvd #104, Lawndale — right in the heart of the South Bay.</p>
+          <a href="javascript:void(0)" onclick="switchTab('visit')" class="btn-ghost" style="margin-top:1.2rem;display:inline-flex;font-size:.64rem;padding:.75rem 1.5rem">Get Directions</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BIO PANEL (full-screen barber page) -->
+  <div class="panel" id="panel-bio">
+    <div class="bio-panel-shell">
+      <div class="bio-panel-back" onclick="switchTab('team')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Team
+      </div>
+      <div id="bioPanelContent"><!-- injected by openBarberPage() --></div>
+    </div>
+  </div>
+
+  <!-- BOOK -->
+  <div class="panel" id="panel-book">
+    <div class="book-shell">
+      <div class="book-grid">
+        <div class="rv">
+          <div class="lbl">Appointments</div>
+          <h2 class="dsp">BOOK YOUR<br><span class="g">CHAIR</span></h2>
+          <div class="book-steps">
+            <div class="bstep" onclick="switchTab('team')" style="cursor:pointer" title="Go to Team tab"><div class="bstep-n">01</div><div><h4>Find Your Barber <span style="color:var(--gold);font-size:.7rem">→</span></h4><p>Browse all 11 barbers — tap any name to see their work, specialty, and book directly.</p></div></div>
+            <div class="bstep" onclick="document.getElementById('book-actions').scrollIntoView({behavior:'smooth'})" style="cursor:pointer" title="Jump to booking options"><div class="bstep-n">02</div><div><h4>Book Online or Call <span style="color:var(--gold);font-size:.7rem">↓</span></h4><p>Use Square to book in under 2 minutes, or call the shop directly.</p></div></div>
+            <div class="bstep" onclick="switchTab('visit')" style="cursor:pointer" title="See hours & directions"><div class="bstep-n">03</div><div><h4>Walk-Ins Welcome <span style="color:var(--gold);font-size:.7rem">→</span></h4><p>No appointment? Come in during open hours — tap to see address & hours.</p></div></div>
+          </div>
+          <div class="book-btns" id="book-actions">
+            <a href="https://squareup.com/appointments/book/castillo502" target="_blank" rel="noopener" class="bcta-main">Book Online — Square Appointments</a>
+            <a href="tel:3236056488" class="bcta-sec">Call — (323) 605-6488</a>
+            <a href="https://www.instagram.com/castillo_502_barbershop" target="_blank" rel="noopener" class="bcta-sec">DM on Instagram</a>
+          </div>
+        </div>
+        <div class="rv d2">
+          <div class="lbl">Payments</div>
+          <h2 class="dsp" style="margin-bottom:1.4rem">HOW TO<br><span class="g">PAY</span></h2>
+          <div class="pay-card">
+            <div class="pay-card-hdr"><span style="font-size:1.2rem">💳</span><div><h3>We Accept</h3><p>Pay however works for you</p></div></div>
+            <a href="https://venmo.com/castillo502" target="_blank" rel="noopener" class="pay-row">
+              <div class="pay-logo pl-v">V</div><div><div class="pay-name">Venmo</div><div class="pay-sub">@castillo502</div></div>
+              <span class="pay-chip">Popular</span><span class="pay-arr">→</span>
+            </a>
+            <a href="https://cash.app/$castillo502" target="_blank" rel="noopener" class="pay-row">
+              <div class="pay-logo pl-c">$</div><div><div class="pay-name">Cash App</div><div class="pay-sub">$castillo502</div></div>
+              <span class="pay-arr">→</span>
+            </a>
+            <a href="tel:3236056488" class="pay-row" title="Zelle — send to shop phone number">
+              <div class="pay-logo pl-z">Z</div><div><div class="pay-name">Zelle</div><div class="pay-sub">(323) 605-6488</div></div>
+              <span class="pay-arr">→</span>
+            </a>
+            <a href="https://squareup.com/appointments/book/castillo502" target="_blank" rel="noopener" class="pay-row">
+              <div class="pay-logo pl-s">■</div><div><div class="pay-name">Card / Square</div><div class="pay-sub">All major cards in-shop</div></div>
+              <span class="pay-chip">Cards OK</span><span class="pay-arr">→</span>
+            </a>
+            <div class="pay-row" style="cursor:default">
+              <div class="pay-logo pl-m">💵</div><div><div class="pay-name">Cash</div><div class="pay-sub">Always welcome · ATM nearby</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISIT -->
+  <div class="panel" id="panel-visit">
+    <div class="visit-shell">
+      <div class="visit-grid">
+        <div class="rv">
+          <div class="lbl">Hours</div>
+          <div class="v-h2">WHEN TO<br><span class="g">COME IN</span></div>
+          <table class="hours-tbl">
+            <tbody>
+              <tr><td>Monday</td><td>10:00 AM – 7:00 PM</td></tr>
+              <tr><td>Tuesday</td><td>10:00 AM – 7:00 PM</td></tr>
+              <tr><td>Wednesday</td><td>10:00 AM – 7:00 PM</td></tr>
+              <tr><td>Thursday</td><td>10:00 AM – 7:00 PM</td></tr>
+              <tr><td>Friday</td><td>10:00 AM – 8:00 PM</td></tr>
+              <tr><td>Saturday</td><td>9:00 AM – 6:00 PM</td></tr>
+              <tr><td>Sunday</td><td>Closed</td></tr>
+            </tbody>
+          </table>
+          <p class="walk">✦ Walk-ins welcome · Appointments available with any barber</p>
+        </div>
+        <div class="rv d2">
+          <div class="lbl">Find Us</div>
+          <div class="v-h2">GET IN<br><span class="g">TOUCH</span></div>
+          <div class="ci-list">
+            <a href="https://maps.google.com/?q=15733+Hawthorne+Blvd+Lawndale+CA+90260" target="_blank" rel="noopener" class="ci-row">
+              <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><div class="ci-lbl">Address</div><div class="ci-val">15733 Hawthorne Blvd #104<small>Lawndale, CA 90260</small></div>
+              <a href="https://maps.google.com/?q=15733+Hawthorne+Blvd+Lawndale+CA+90260" target="_blank" rel="noopener" class="maps-a">Open in Google Maps →</a></div>
+            </a>
+            <a href="tel:3236056488" class="ci-row">
+              <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.59a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+              <div><div class="ci-lbl">Phone</div><div class="ci-val">(323) 605-6488</div></div>
+            </a>
+            <a href="https://www.instagram.com/castillo_502_barbershop" target="_blank" rel="noopener" class="ci-row">
+              <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="15" rx="2"/><circle cx="12" cy="13.5" r="3"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg></div>
+              <div><div class="ci-lbl">Instagram</div><div class="ci-val">@castillo_502_barbershop</div></div>
+            </a>
+            <div class="ci-row">
+              <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <div><div class="ci-lbl">Owner</div><div class="ci-val">JV Castillo</div></div>
+            </div>
+          </div>
+          <div class="soc-row">
+            <a href="https://www.instagram.com/castillo_502_barbershop" target="_blank" rel="noopener" class="soc-pill hi">Instagram</a>
+            <a href="tel:3236056488" class="soc-pill">Call</a>
+            <a href="https://maps.google.com/?q=15733+Hawthorne+Blvd+Lawndale+CA+90260" target="_blank" rel="noopener" class="soc-pill">Directions</a>
+            <a href="javascript:void(0)" onclick="switchTab('book')" class="soc-pill">Book</a>
+          </div>
+          <div class="map-embed">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1656!2d-118.3536!3d33.8897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2b3a0e0000001%3A0x1!2s15733+Hawthorne+Blvd+%23104%2C+Lawndale%2C+CA+90260!5e0!3m2!1sen!2sus!4v1" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /panels -->
+</div><!-- /shell -->
+
+
+
+</div>
+
+<script>
+/* ════════════ TAB SWITCHER (defined first so inline onclicks work) ════════════ */
+let atmInited = false;
+
+window.switchTab = function(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+  var target = document.getElementById('panel-' + name);
+  if (target) {
+    target.classList.add('active');
+    target.scrollTop = 0;
+    // Trigger reveal animations for elements in this panel
+    setTimeout(function() {
+      target.querySelectorAll('.rv').forEach(function(el) { el.classList.add('on'); });
+    }, 30);
+  }
+
+  var tabBtn = document.querySelector('.tab[data-tab="' + name + '"]');
+  if (tabBtn) tabBtn.classList.add('active');
+
+  if (name === 'team') {
+    buildBarberGrid();
+    setTimeout(function(){ if (!atmInited && window.initAtm) window.initAtm(); }, 150);
+  }
+};
+
+/* ════════════ HOURS ════════════ */
+(function(){
+  var HOURS = {Sunday:'Closed',Monday:'10AM–7PM',Tuesday:'10AM–7PM',Wednesday:'10AM–7PM',Thursday:'10AM–7PM',Friday:'10AM–8PM',Saturday:'9AM–6PM'};
+  var DAYS  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var todayName = DAYS[new Date().getDay()];
+  var el = document.getElementById('todayHours');
+  if (el) el.textContent = todayName + ' · ' + HOURS[todayName];
+})();
+
+/* ════════════ BARBER DATA ════════════ */
+var BARBERS = [
+  {handle:'guerothebarber310',name:'Castillo J',specialty:'Licensed Barber · Fades · Kids Cuts',bio:'Licensed barber based in Hawthorne, CA. Appointment only — Tuesday through Saturday. One of the founding members of Castillo 502. Known for clean boy haircuts and sharp fades.',followers:null,location:'Hawthorne, CA',is_private:true,posts:[]},
+  {handle:'chinothe_barber',name:'Chino The Barber',specialty:'Fades · Lineups · Transformations',bio:'California Licensed Barber. Appointments only. Known for clean fades, modern men\'s cuts, sharp lineups, and drip-style grooming.',followers:'728',location:'LA · South Bay',is_private:false,posts:['https://www.instagram.com/p/CpLkyHvyRHL/','https://www.instagram.com/p/C-D7n6QSASj/']},
+  {handle:'omar_blenz',name:'Omar',specialty:'Barber · Blends · Everyday Cuts',bio:'Regular day as a barber. Based right at Castillo 502 in Lawndale, CA. Come find Omar at the shop.',followers:'309',location:'Lawndale, CA',is_private:false,posts:['https://www.instagram.com/p/DZuD2BhG2Sn/','https://www.instagram.com/p/DVtbcGAFFPt/']},
+  {handle:'cutzbylesl_thebarber',name:'Cutzbyles',specialty:'All Textures · All Ages · 30+ Years',bio:'30+ years of experience. All types of haircuts, all textures, for all ages.',followers:'124',location:'South Bay, CA',is_private:false,posts:[]},
+  {handle:'oswuar_the_barber_310',name:'Oswuar Lopez Castillo',specialty:'Fades · Haircuts · South Bay',bio:'Barber specializing in haircuts and fades. Based in Los Angeles. Faith-driven, family-first. Part of the Castillo 502 family.',followers:null,location:'Los Angeles, CA',is_private:false,posts:['https://www.instagram.com/p/DO-JB4ZEW3o/','https://www.instagram.com/p/C6UPDnhB1dL/','https://www.instagram.com/p/Cv8RNOArdZs/']},
+  {handle:'jc_calibarber',name:'Jonatan',specialty:'Celebrity Barber · Fades · Precision',bio:'Professional barber. Known for precision cuts and top-tier craft. Proud founding barber at Castillo 502.',followers:'936',location:'Hawthorne, CA',is_private:false,posts:['https://www.instagram.com/reel/DZym1ypyLmn/']},
+  {handle:'barber_mimi_official',name:'Barber Mimi',specialty:'Master Barber · Fades · Loctician',bio:'Licensed Master Barber and Loctician. Fade & Beard Specialist. Precision fades and clean beard work every time.',followers:'116',location:'South Bay, CA',is_private:false,posts:[]},
+  {handle:'southbayjavi',name:'Javi',specialty:'Barber · Hair Stylist · South Bay',bio:'DM to book. Fresh to Castillo 502 — making moves in the South Bay from day one.',followers:'99',location:'South Bay, CA',is_private:false,posts:[]},
+  {handle:'barberinspace',name:'Eddie Santiago',specialty:'Coarse & Long Hair · 9 Yrs · Drop Fades',bio:'Licensed Professional with 9 years of experience. Specializes in coarse, straight & long hair. Medium drop fades and clipper over comb. By Appointment Only.',followers:'1.2K+',location:'Los Angeles, CA',is_private:false,posts:['https://www.instagram.com/p/DUY6NAQkmTQ/','https://www.instagram.com/barberinspace/p/CutNY-xug59/','https://www.instagram.com/barberinspace/reel/DTUKBqCgEG6/']},
+  {handle:'jae_blendz.13',name:'JAE BLENDZ',specialty:'Blends · Fades · Hair Designs',bio:'Philippians 4:13. Haircuts, fades, and creative hair designs with faith behind every cut.',followers:'1,550',location:'South Bay, CA',is_private:false,posts:['https://www.instagram.com/reel/DSJIeXvCVOF/','https://www.instagram.com/reel/DQipG3_jlGS/']},
+  {handle:'angel.blendzz310',name:'Angel Blendz',specialty:'Blends · Haircuts · $35+',bio:'Los Angeles, CA. DM to book — $35+. Clean blends, fresh cuts, and that South Bay energy.',followers:'395',location:'Los Angeles, CA',is_private:false,posts:[]}
+];
+
+/* ════════════ BARBER CARD GRID ════════════ */
+var gridBuilt = false;
+function buildBarberGrid() {
+  if (gridBuilt) return; gridBuilt = true;
+  var grid = document.getElementById('barbersGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  BARBERS.forEach(function(b, idx) {
+    var card = document.createElement('div');
+    card.className = 'barber-card rv';
+    card.setAttribute('onclick', 'openBarberPage("' + b.handle + '")');
+    card.innerHTML =
+      '<div class="bc-photo">' +
+        '<div class="bc-photo-placeholder">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1" width="56" height="56"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+        '</div>' +
+        '<div class="bc-number">' + String(idx+1).padStart(2,'0') + '</div>' +
+      '</div>' +
+      '<div class="bc-info">' +
+        '<div class="bc-handle">@' + b.handle + '</div>' +
+        '<div class="bc-name">' + b.name + '</div>' +
+        '<div class="bc-spec">' + b.specialty + '</div>' +
+        '<span class="bc-cta">View Profile &rarr;</span>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+}
+
+/* ════════════ BARBER BIO FULL PAGE ════════════ */
+window.openBarberPage = function(handle) {
+  var b = null;
+  for (var i=0;i<BARBERS.length;i++) { if (BARBERS[i].handle===handle) { b=BARBERS[i]; break; } }
+  if (!b) return;
+
+  var realPosts = (b.posts||[]).filter(function(u){ return u && u.indexOf('instagram.com')>-1; });
+
+  var workHTML = '';
+  if (realPosts.length > 0) {
+    workHTML = '<div class="bph-work-title">RECENT WORK</div><div class="bph-embed-grid" id="bph-embeds-' + handle + '">';
+    realPosts.forEach(function(url){
+      var clean = url.split('?')[0].replace(/\/$/, '');
+      workHTML += '<blockquote class="instagram-media" data-instgrm-permalink="' + clean + '/" data-instgrm-version="14" style="background:#1E1E1E;border:1px solid rgba(255,215,0,.1);margin:0;padding:0;width:100%;min-width:100%"></blockquote>';
+    });
+    workHTML += '</div>';
+  } else {
+    workHTML = '<div class="bph-work-title">PORTFOLIO</div><div class="bph-placeholder-grid">';
+    for (var j=0;j<6;j++) {
+      workHTML += '<a class="bph-ph-cell" href="https://www.instagram.com/' + handle + '/" target="_blank" rel="noopener">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" width="32" height="32"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="var(--gold)" stroke="none"/></svg>' +
+        '<span>View on IG</span></a>';
+    }
+    workHTML += '</div>';
+  }
+
+  var statsHTML = b.followers
+    ? '<div class="bph-stats"><div><div class="bph-stat-n">' + b.followers + '</div><div class="bph-stat-l">Followers</div></div><div><div class="bph-stat-n">502</div><div class="bph-stat-l">Shop</div></div></div>'
+    : '<div class="bph-stats"><div><div class="bph-stat-n">502</div><div class="bph-stat-l">Shop</div></div></div>';
+
+  var locHTML = b.location
+    ? '<div style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" width="13" height="13"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + b.location + '</div>'
+    : '';
+
+  var content = document.getElementById('bioPanelContent');
+  content.innerHTML =
+    '<div class="bph-hero rv">' +
+      '<div class="bph-avatar">' +
+        '<div class="bph-avatar-placeholder">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="0.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+        '</div>' +
+      '</div>' +
+      '<div class="bph-meta">' +
+        '<div class="bph-handle">@' + b.handle + '</div>' +
+        '<h1 class="bph-name">' + b.name.toUpperCase() + '</h1>' +
+        '<div class="bph-spec">' + b.specialty + '</div>' +
+        locHTML +
+        statsHTML +
+        '<p style="font-size:.84rem;color:var(--muted);line-height:1.75;margin-bottom:1.6rem;max-width:480px">' + b.bio + '</p>' +
+        '<div class="bph-btns">' +
+          '<a href="https://www.instagram.com/' + handle + '/" target="_blank" rel="noopener" class="bph-ig-btn">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="white" stroke="none"/></svg>' +
+            'Follow on Instagram</a>' +
+          '<button class="bph-book-btn" onclick=\"switchTab(\'book\')\" >Book Now</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    workHTML +
+    '<div style="text-align:center;padding:1.5rem 0;border-top:1px solid var(--border)">' +
+      '<a href="https://www.instagram.com/' + handle + '/" target="_blank" rel="noopener" class="btn-ghost" style="font-size:.65rem;padding:.7rem 1.5rem;display:inline-flex;align-items:center;gap:.5rem">' +
+        'Visit @' + handle + ' on Instagram</a>' +
+    '</div>';
+
+  switchTab('bio');
+
+  setTimeout(function(){
+    if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
+  }, 400);
+};
+
+/* ════════════ INIT HOME PANEL REVEALS ════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  var home = document.getElementById('panel-home');
+  if (home) {
+    home.querySelectorAll('.rv').forEach(function(el) { el.classList.add('on'); });
+  }
+});
+
+/* ════════════ 3D SCENE ════════════ */
+</script>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
+window.initAtm = function() {
+  if (atmInited) return; atmInited = true;
+
+  const canvas = document.getElementById('atm-canvas');
+  const card   = canvas.parentElement;
+  const W = () => card.clientWidth  || 800;
+  const H = () => canvas.clientHeight || 460;
+
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(W(), H());
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.6;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x111111);
+  scene.fog = new THREE.Fog(0x111111, 14, 28);
+
+  const cam = new THREE.PerspectiveCamera(52, W()/H(), 0.1, 40);
+  cam.position.set(0, 1.95, 7.2);
+  cam.lookAt(0, 1.4, 0);
+
+  // ── HELPERS ──
+  const mat = (c, r=0.5, m=0, emC=null, emI=0) => {
+    const o = new THREE.MeshStandardMaterial({color:c, roughness:r, metalness:m});
+    if (emC) { o.emissive=new THREE.Color(emC); o.emissiveIntensity=emI; }
+    return o;
+  };
+  const add = (geo, material, x=0, y=0, z=0, rx=0, ry=0, rz=0) => {
+    const m = new THREE.Mesh(geo, material);
+    m.position.set(x,y,z); m.rotation.set(rx,ry,rz);
+    m.castShadow=true; m.receiveShadow=true; scene.add(m); return m;
+  };
+  const group = () => { const g=new THREE.Group(); scene.add(g); return g; };
+  const gadd = (g,geo,mat,x=0,y=0,z=0,rx=0,ry=0,rz=0) => {
+    const m=new THREE.Mesh(geo,mat);
+    m.position.set(x,y,z); m.rotation.set(rx,ry,rz);
+    m.castShadow=true; m.receiveShadow=true; g.add(m); return m;
+  };
+
+  // ── CANVAS TEXTURE HELPERS ──
+  const makeTex = (fn, w=256, h=256) => {
+    const c=document.createElement('canvas'); c.width=w; c.height=h;
+    const ctx=c.getContext('2d'); fn(ctx,w,h);
+    const t=new THREE.CanvasTexture(c); return t;
+  };
+
+  // Jersey texture — looks like a real hung jersey
+  const jerseyTex = (num, color, accent) => makeTex((ctx,w,h) => {
+    // Background jersey fabric
+    ctx.fillStyle = color;
+    ctx.fillRect(0,0,w,h);
+    // Shoulder seam
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.moveTo(0,h*0.28); ctx.lineTo(w*0.32,h*0.18); ctx.lineTo(w*0.68,h*0.18); ctx.lineTo(w,h*0.28); ctx.stroke();
+    // Side seams
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(w*0.12,h*0.18); ctx.lineTo(w*0.08,h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w*0.88,h*0.18); ctx.lineTo(w*0.92,h); ctx.stroke();
+    // Number
+    ctx.fillStyle = accent;
+    ctx.font = `bold ${Math.floor(h*0.42)}px Arial Black, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(num, w*0.5, h*0.58);
+    // Collar
+    ctx.strokeStyle = accent; ctx.lineWidth = 8;
+    ctx.beginPath(); ctx.arc(w*0.5, h*0.1, w*0.13, 0.3, Math.PI-0.3); ctx.stroke();
+  }, 256, 320);
+
+  // Mirror surface — slightly reflective blue-gray
+  const mirrorTex = makeTex((ctx,w,h) => {
+    const g = ctx.createLinearGradient(0,0,w,h);
+    g.addColorStop(0,'#6A8099'); g.addColorStop(0.4,'#8FA4BB'); g.addColorStop(0.7,'#7A95AA'); g.addColorStop(1,'#5A7080');
+    ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+    // Subtle vertical reflection streak
+    ctx.fillStyle='rgba(255,255,255,0.08)';
+    ctx.fillRect(w*0.35,0,w*0.08,h);
+    ctx.fillStyle='rgba(255,255,255,0.04)';
+    ctx.fillRect(w*0.6,0,w*0.04,h);
+  }, 128, 256);
+
+  // Wood countertop texture
+  const woodTex = makeTex((ctx,w,h) => {
+    ctx.fillStyle='#7A5C35'; ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='rgba(0,0,0,0.18)'; ctx.lineWidth=1.5;
+    for(let y=8;y<h;y+=18){ ctx.beginPath(); ctx.moveTo(0,y+Math.sin(y)*2); ctx.lineTo(w,y+Math.cos(y*0.7)*2); ctx.stroke(); }
+  }, 256, 64);
+
+  // Floor plank texture
+  const floorTex = makeTex((ctx,w,h) => {
+    ctx.fillStyle='#C4B09A'; ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='rgba(0,0,0,0.12)'; ctx.lineWidth=1;
+    for(let y=0;y<h;y+=24){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+    for(let i=0;i<8;i++){ ctx.strokeStyle='rgba(0,0,0,0.06)'; ctx.beginPath(); ctx.moveTo(i*40+Math.random()*10,0); ctx.lineTo(i*40+Math.random()*10,h); ctx.stroke(); }
+  }, 512, 128);
+  floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+  floorTex.repeat.set(8, 4);
+
+  // ── MATERIALS ──
+  const wallM    = mat(0x252525, 0.95, 0.0);
+  const floorM   = new THREE.MeshStandardMaterial({map:floorTex, roughness:0.42, metalness:0.03});
+  const ceilM    = mat(0xE8E8E8, 0.88, 0, 0xFFFFFF, 0.08);
+  const goldM    = mat(0xFFCC00, 0.08, 0.95);
+  const goldDimM = mat(0xDAA520, 0.12, 0.9);
+  const blackM   = mat(0x111111, 0.72, 0.04);
+  const leatherM = mat(0x0D0D0D, 0.82, 0.0);
+  const woodTopM = new THREE.MeshStandardMaterial({map:woodTex, roughness:0.65, metalness:0.02});
+  const chromeM  = mat(0xE0DDD8, 0.06, 0.97);
+  const cabinetM = mat(0x181818, 0.58, 0.22);
+
+  // ── ROOM ──
+  // Floor with texture
+  add(new THREE.PlaneGeometry(16,18), floorM, 0,0,0,-Math.PI/2);
+  // Ceiling bright white
+  add(new THREE.PlaneGeometry(16,18), ceilM, 0,6.2,0, Math.PI/2);
+  // Back wall
+  add(new THREE.PlaneGeometry(16,7.5), wallM, 0,3.5,-6.5);
+  // Side walls
+  add(new THREE.PlaneGeometry(18,7.5), wallM,-7,3.5,0, 0, Math.PI/2);
+  add(new THREE.PlaneGeometry(18,7.5), wallM, 7,3.5,0, 0,-Math.PI/2);
+  // Baseboard trim — gold accent strip at wall base
+  add(new THREE.BoxGeometry(16,0.08,0.04), goldDimM, 0,0.04,-6.48);
+  add(new THREE.BoxGeometry(0.04,0.08,18), goldDimM,-6.98,0.04,0);
+  add(new THREE.BoxGeometry(0.04,0.08,18), goldDimM, 6.98,0.04,0);
+
+  // ── CEILING LED TRACK SYSTEM ──
+  // Main track rail
+  add(new THREE.BoxGeometry(12,0.05,0.09), chromeM, 0,6.04,-0.5);
+  add(new THREE.BoxGeometry(12,0.05,0.09), chromeM, 0,6.04,-3.5);
+  const goldLights = [];
+  [-4.5,-2.2,0,2.2,4.5].forEach(x => {
+    [-0.5,-3.5].forEach(z => {
+      add(new THREE.CylinderGeometry(0.018,0.018,0.18,8), chromeM, x,5.92,z);
+      const bulbM = mat(0xFFF8E0,0.1,0.1,0xFFF8DC,5.0);
+      add(new THREE.SphereGeometry(0.06,10,10), bulbM, x,5.78,z);
+      const pl = new THREE.PointLight(0xFFFAE0, 2.0, 5);
+      pl.position.set(x,5.5,z); scene.add(pl);
+      goldLights.push(pl);
+    });
+  });
+
+  // ── AMBIENT + KEY LIGHTING ──
+  scene.add(new THREE.AmbientLight(0xFFFFFF, 0.38));
+  const key = new THREE.DirectionalLight(0xFFF5E0, 2.2);
+  key.position.set(2,9,4); key.castShadow=true;
+  key.shadow.mapSize.set(2048,2048);
+  key.shadow.camera.near=0.5; key.shadow.camera.far=30;
+  key.shadow.camera.left=-10; key.shadow.camera.right=10;
+  key.shadow.camera.top=10; key.shadow.camera.bottom=-10;
+  scene.add(key);
+
+  // Gold rim lights from mirror area
+  const goldRim = (x,y,z) => { const l=new THREE.PointLight(0xFFD700,2.8,6); l.position.set(x,y,z); scene.add(l); return l; };
+  const gr1=goldRim(-2.6,3.2,-3.5), gr2=goldRim(0,3.2,-3.5), gr3=goldRim(2.6,3.2,-3.5);
+  const goldGlows = [gr1,gr2,gr3];
+
+  // ── MIRROR STATIONS (black cabinet + wood top + thick gold mirror) ──
+  const makeStation = (sx) => {
+    const g = new THREE.Group(); g.position.set(sx,0,-4.5); scene.add(g);
+    // Black tool cabinet body
+    gadd(g, new THREE.BoxGeometry(1.7,1.0,0.58), cabinetM, 0,0.5,0);
+    // Cabinet drawer grooves
+    for(let dy=0.1;dy<0.9;dy+=0.165){
+      gadd(g, new THREE.BoxGeometry(1.68,0.012,0.006), mat(0x2A2A2A,0.4,0.3), 0,dy,0.292);
+      gadd(g, new THREE.BoxGeometry(0.18,0.012,0.006), mat(0x444,0.4,0.3), 0,dy+0.001,0.292);
+    }
+    // Drawer handles — small gold bars
+    for(let dy=0.1;dy<0.9;dy+=0.165){
+      gadd(g, new THREE.CylinderGeometry(0.01,0.01,0.14,8), goldM, 0,dy+0.04,0.298, Math.PI/2);
+    }
+    // Wood countertop
+    gadd(g, new THREE.BoxGeometry(1.75,0.07,0.64), woodTopM, 0,1.04,0.02);
+    // Counter lip (gold edge)
+    gadd(g, new THREE.BoxGeometry(1.76,0.025,0.02), goldDimM, 0,1.008,0.32);
+
+    // THICK GOLD MIRROR FRAME — like real shop
+    // Outer frame
+    gadd(g, new THREE.BoxGeometry(1.42,2.1,0.075), goldM, 0,2.25,-0.22);
+    // Mirror glass inset (slightly recessed)
+    const mirM = new THREE.MeshStandardMaterial({map:mirrorTex,roughness:0.03,metalness:0.95,envMapIntensity:1.2});
+    gadd(g, new THREE.BoxGeometry(1.16,1.82,0.018), mirM, 0,2.24,-0.148);
+    // Frame inner bevel shadow
+    gadd(g, new THREE.BoxGeometry(1.28,1.94,0.01), mat(0xCC9900,0.2,0.8), 0,2.25,-0.167);
+    // Frame top/bottom decorative bars
+    gadd(g, new THREE.BoxGeometry(1.42,0.09,0.08), goldM, 0,3.32,-0.22);
+    gadd(g, new THREE.BoxGeometry(1.42,0.09,0.08), goldM, 0,1.19,-0.22);
+    // Frame side bars
+    gadd(g, new THREE.BoxGeometry(0.09,2.1,0.08), goldM,-0.665,2.25,-0.22);
+    gadd(g, new THREE.BoxGeometry(0.09,2.1,0.08), goldM, 0.665,2.25,-0.22);
+
+    // Tool bottles on counter (varied heights/colors)
+    const bottles = [[-0.55,1.12,0.1,0xFFD700,0.16,0.26],[-0.38,1.10,0.1,0x111111,0.14,0.22],
+                     [-0.22,1.09,0.1,0xEEEEEE,0.035,0.20],[0,1.10,0.1,0xB8943A,0.04,0.22],
+                     [0.18,1.11,0.1,0x333333,0.038,0.24],[0.34,1.10,0.1,0x8B0000,0.036,0.20]];
+    bottles.forEach(([bx,by,bz,c,r,h]) => {
+      gadd(g, new THREE.CylinderGeometry(r,r*1.1,h,10), mat(c,0.3,0.5), bx,by+(h/2),bz);
+      gadd(g, new THREE.CylinderGeometry(r*0.4,r*0.4,0.04,8), mat(0xCCCCCC,0.2,0.7), bx,by+h+0.005,bz);
+    });
+    // White towel roll
+    gadd(g, new THREE.CylinderGeometry(0.058,0.058,0.18,12), mat(0xF0F0F0,0.85), 0.5,1.09,0.12, Math.PI/2);
+    // Clippers hanging (dark gray)
+    gadd(g, new THREE.BoxGeometry(0.06,0.19,0.04), mat(0x2A2A2A,0.5,0.3), 0.55,1.14,0.12);
+    gadd(g, new THREE.BoxGeometry(0.055,0.19,0.04), mat(0x1A1A1A,0.5,0.3), 0.63,1.13,0.12);
+  };
+  makeStation(-2.6); makeStation(0); makeStation(2.6);
+
+  // ── BARBER CHAIRS — premium black leather + ornate gold frame ──
+  const makeChair = (cx) => {
+    const g = new THREE.Group(); g.position.set(cx,0,1.1); scene.add(g);
+    // 5-star gold base
+    for(let i=0;i<5;i++){
+      const a=i*Math.PI*2/5;
+      const bx=Math.cos(a)*0.42, bz=Math.sin(a)*0.42;
+      gadd(g, new THREE.BoxGeometry(0.09,0.045,0.46), goldM, bx*0.5,0.022,bz*0.5, 0,a,0);
+      // Caster bump
+      gadd(g, new THREE.SphereGeometry(0.05,8,6), mat(0x222222,0.6), bx,0.05,bz);
+    }
+    // Center hub
+    gadd(g, new THREE.CylinderGeometry(0.085,0.085,0.065,16), goldM, 0,0.033,0);
+    // Hydraulic column — gold
+    gadd(g, new THREE.CylinderGeometry(0.095,0.115,1.08,14), goldM, 0,0.575,0);
+    // Seat plate — gold
+    gadd(g, new THREE.CylinderGeometry(0.42,0.42,0.055,22), goldM, 0,1.13,0);
+    // Decorative torus ring
+    gadd(g, new THREE.TorusGeometry(0.43,0.022,8,36), goldM, 0,1.16,0, Math.PI/2);
+    // Seat cushion — thick black leather
+    gadd(g, new THREE.BoxGeometry(0.78,0.14,0.72), leatherM, 0,1.22,0.02);
+    // Seat edge piping (gold)
+    gadd(g, new THREE.BoxGeometry(0.80,0.04,0.005), goldDimM, 0,1.175,0.362);
+    // Backrest — black with slight recline
+    gadd(g, new THREE.BoxGeometry(0.74,0.95,0.14), leatherM, 0,1.72,-0.34, 0.12);
+    // Backrest gold side rails
+    gadd(g, new THREE.BoxGeometry(0.04,0.95,0.05), goldM,-0.39,1.72,-0.3, 0.12);
+    gadd(g, new THREE.BoxGeometry(0.04,0.95,0.05), goldM, 0.39,1.72,-0.3, 0.12);
+    // Backrest top bar
+    gadd(g, new THREE.BoxGeometry(0.76,0.04,0.07), goldM, 0,2.17,-0.26, 0.12);
+    // Headrest — black padded
+    gadd(g, new THREE.BoxGeometry(0.48,0.26,0.11), leatherM, 0,2.28,-0.36, 0.1);
+    gadd(g, new THREE.BoxGeometry(0.50,0.005,0.005), goldDimM, 0,2.42,-0.31);
+    // Armrests — gold chrome rods + black pad
+    [-0.44,0.44].forEach(ax => {
+      gadd(g, new THREE.CylinderGeometry(0.025,0.025,0.32,10), goldM, ax,1.32, 0.14, 0,0,Math.PI/2+0.15);
+      gadd(g, new THREE.BoxGeometry(0.09,0.055,0.54), goldM, ax,1.19,-0.02);
+      gadd(g, new THREE.BoxGeometry(0.085,0.04,0.5), leatherM, ax,1.225,-0.02);
+    });
+    // Footrest — gold
+    gadd(g, new THREE.BoxGeometry(0.7,0.06,0.3), goldM, 0,0.65,0.42);
+    gadd(g, new THREE.BoxGeometry(0.72,0.025,0.005), goldM, 0,0.625,0.57);
+  };
+  makeChair(-2.6); makeChair(0); makeChair(2.6);
+
+  // ── BARBER POLES (left/right corners) ──
+  const makePole = (px) => {
+    const g = new THREE.Group(); g.position.set(px,0,-3.5); scene.add(g);
+    // Base + top cap
+    gadd(g, new THREE.CylinderGeometry(0.065,0.07,0.12,14), chromeM, 0,0.06,0);
+    gadd(g, new THREE.SphereGeometry(0.075,12,8), chromeM, 0,2.6,0);
+    // Outer chrome shell
+    gadd(g, new THREE.CylinderGeometry(0.058,0.058,2.5,14), chromeM, 0,1.25,0);
+    // Red stripe
+    const redPole = new THREE.Mesh(new THREE.CylinderGeometry(0.052,0.052,2.4,14), mat(0xCC2222,0.4));
+    redPole.position.y=1.2; g.add(redPole);
+    // White and blue stripes
+    [0,0.7,1.4].forEach(py => {
+      gadd(g, new THREE.CylinderGeometry(0.054,0.054,0.22,14), mat(0xEEEEEE,0.5), 0,py+0.36,0);
+      gadd(g, new THREE.CylinderGeometry(0.054,0.054,0.22,14), mat(0x1155BB,0.5), 0,py+0.1,0);
+    });
+    // Glass cylinder (transparent)
+    const glass = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.062,0.062,2.5,14,1,true),
+      new THREE.MeshStandardMaterial({color:0xCCEEFF,transparent:true,opacity:0.14,roughness:0,metalness:0.1,side:THREE.DoubleSide})
+    ); glass.position.y=1.25; g.add(glass);
+    // Light glow
+    const pl = new THREE.PointLight(0xFFDD44, 0.9, 2.5); pl.position.set(0,1.3,0.18); g.add(pl);
+    return {g, redPole};
+  };
+  const pole1=makePole(-5.8), pole2=makePole(5.8);
+
+  // ── JERSEYS ON WALL (canvas texture, framed, realistic) ──
+  const jerseyData = [
+    {x:-4.2, num:'23', color:'#8B0000', accent:'#FFD700'},
+    {x:-1.8, num:'7',  color:'#00004A', accent:'#C0C0C0'},
+    {x: 0.6, num:'10', color:'#1A5F1A', accent:'#FFFFFF'},
+    {x: 3.0, num:'3',  color:'#1A1A1A', accent:'#FFD700'},
+  ];
+  jerseyData.forEach(({x,num,color,accent}) => {
+    const tex = jerseyTex(num,color,accent);
+    // Shadow box frame — black
+    add(new THREE.BoxGeometry(0.92,1.18,0.05), mat(0x0A0A0A,0.9), x,4.82,-6.46);
+    // Gold frame trim
+    add(new THREE.BoxGeometry(0.94,1.20,0.06), mat(0xDAA520,0.15,0.8), x,4.82,-6.5);
+    // Jersey face
+    const jM = new THREE.MeshStandardMaterial({map:tex, roughness:0.8, metalness:0.0});
+    add(new THREE.PlaneGeometry(0.82,1.04), jM, x,4.82,-6.42);
+  });
+
+  // ── WAITING BENCH ──
+  (() => {
+    const g = new THREE.Group(); g.position.set(0,0,-5.7); scene.add(g);
+    // Main seat
+    gadd(g, new THREE.BoxGeometry(3.2,0.1,0.58), leatherM, 0,0.48,0);
+    // Back panel
+    gadd(g, new THREE.BoxGeometry(3.2,0.72,0.07), cabinetM, 0,0.9,-0.24);
+    // Back top trim
+    gadd(g, new THREE.BoxGeometry(3.22,0.04,0.04), goldDimM, 0,1.26,-0.24);
+    // Legs (4)
+    [-1.4,-0.4,0.4,1.4].forEach(lx => {
+      gadd(g, new THREE.BoxGeometry(0.06,0.48,0.06), goldM, lx,0.24,0.22);
+      gadd(g, new THREE.BoxGeometry(0.06,0.48,0.06), goldM, lx,0.24,-0.22);
+    });
+    // Seat accent stripe
+    gadd(g, new THREE.BoxGeometry(3.22,0.025,0.005), goldDimM, 0,0.535,0.292);
+  })();
+
+  // ── TV SCREENS — animated Bad Bunny visualizer ──
+  const tvScreens = [];
+  const makeTVTex = (seed) => {
+    const c = document.createElement('canvas'); c.width=256; c.height=144;
+    const ctx = c.getContext('2d');
+    const tex = new THREE.CanvasTexture(c);
+    tex._ctx = ctx; tex._c = c; tex._seed = seed; tex._t = 0;
+    return tex;
+  };
+  const animateTVTex = (tex) => {
+    const ctx = tex._ctx, w = tex._c.width, h = tex._c.height;
+    tex._t += 0.04;
+    const t = tex._t + tex._seed;
+    // Dark background
+    ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
+    // Gradient background pulse
+    const grd = ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,w*0.7);
+    grd.addColorStop(0, `hsla(${(t*20)%360},80%,10%,0.8)`);
+    grd.addColorStop(1, '#000');
+    ctx.fillStyle = grd; ctx.fillRect(0,0,w,h);
+    // Equalizer bars
+    const barW = 6, barGap = 4, bars = 22;
+    const startX = (w - (bars*(barW+barGap)))/2;
+    for(let i=0;i<bars;i++){
+      const bh = (Math.sin(t*3+i*0.5)*0.4+0.5)*(h*0.55) + (Math.sin(t*5+i*0.3)*0.15+0.15)*(h*0.3);
+      const hue = (t*30 + i*8) % 360;
+      ctx.fillStyle = `hsla(${hue},90%,60%,0.9)`;
+      ctx.fillRect(startX+i*(barW+barGap), h*0.75-bh, barW, bh);
+    }
+    // Artist name text
+    ctx.save();
+    ctx.globalAlpha = 0.85 + Math.sin(t*2)*0.15;
+    ctx.font = 'bold 18px Arial Black, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#FFD700';
+    ctx.shadowColor = '#FFD700'; ctx.shadowBlur = 12;
+    ctx.fillText('BAD BUNNY', w/2, h*0.22);
+    ctx.font = '10px Arial, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.shadowBlur = 0;
+    const tracks = ['UN VERANO SIN TI','EL APAGÓN','TITÍ ME PREGUNTÓ','MOSCOW MULE','PARTY'];
+    ctx.fillText(tracks[Math.floor(t/8)%tracks.length], w/2, h*0.36);
+    ctx.restore();
+    // Scanlines overlay
+    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+    for(let y=0;y<h;y+=3){ ctx.fillRect(0,y,w,1); }
+    tex.needsUpdate = true;
+  };
+
+  [-2.6,0,2.6].forEach((x,si) => {
+    // TV bezel — thin black frame
+    add(new THREE.BoxGeometry(1.18,0.72,0.055), mat(0x080808,0.9,0.3), x,4.5,-6.435);
+    // Slim side bezels
+    add(new THREE.BoxGeometry(0.035,0.72,0.06), mat(0x1A1A1A,0.7,0.5), x-0.608,4.5,-6.43);
+    add(new THREE.BoxGeometry(0.035,0.72,0.06), mat(0x1A1A1A,0.7,0.5), x+0.608,4.5,-6.43);
+    // Wall mount bracket
+    add(new THREE.BoxGeometry(0.18,0.08,0.1), mat(0x333333,0.6,0.4), x,4.08,-6.42);
+    // Animated screen
+    const tvTex = makeTVTex(si*100);
+    const scrM = new THREE.MeshStandardMaterial({map:tvTex, roughness:0.1, metalness:0.0, emissive:new THREE.Color(0x111111), emissiveIntensity:0.4});
+    const scrMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.08,0.62), scrM);
+    scrMesh.position.set(x,4.5,-6.4); scene.add(scrMesh);
+    tvScreens.push({tex:tvTex, mesh:scrMesh});
+    // Screen glow light
+    const tvGlow = new THREE.PointLight(0x9966FF, 0.6, 2.5);
+    tvGlow.position.set(x,4.5,-5.8); scene.add(tvGlow);
+  });
+
+  // ── GOLD DUST PARTICLES ──
+  const pN=200, pPos=new Float32Array(pN*3), pVel=new Float32Array(pN*3);
+  for(let i=0;i<pN;i++){
+    pPos[i*3]=(Math.random()-0.5)*13; pPos[i*3+1]=Math.random()*6; pPos[i*3+2]=(Math.random()-0.5)*11-2;
+    pVel[i*3]=(Math.random()-0.5)*0.0025; pVel[i*3+1]=Math.random()*0.003+0.001; pVel[i*3+2]=(Math.random()-0.5)*0.0015;
+  }
+  const pGeo=new THREE.BufferGeometry();
+  pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+  const pMat=new THREE.PointsMaterial({color:0xFFD700,size:0.022,transparent:true,opacity:0.45,sizeAttenuation:true});
+  scene.add(new THREE.Points(pGeo,pMat));
+
+  // ── MOUSE PARALLAX ──
+  let mx=0,my=0,tx=0,ty=0;
+  // Listen on both canvas and card so nothing is missed
+  const onMove = e => {
+    const r = card.getBoundingClientRect();
+    mx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+    my = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+  };
+  canvas.addEventListener('mousemove', onMove, {passive:true});
+  card.addEventListener('mousemove',   onMove, {passive:true});
+  // Touch support
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const t = e.touches[0], r = card.getBoundingClientRect();
+    mx = ((t.clientX - r.left) / r.width  - 0.5) * 2;
+    my = ((t.clientY - r.top)  / r.height - 0.5) * 2;
+  }, {passive:false});
+  canvas.addEventListener('mouseleave', () => { mx=0; my=0; }, {passive:true});
+
+  // ── RENDER LOOP ──
+  let t=0;
+  (function loop(){
+    requestAnimationFrame(loop); t+=0.015;
+    tx+=(mx*2.2-tx)*0.06; ty+=(-my*0.7-ty)*0.06;
+    cam.position.x=tx; cam.position.y=1.95+ty*0.35;
+    cam.lookAt(tx*0.2,1.4+ty*0.12,0);
+    // Animate pole rotation
+    if(pole1.redPole) pole1.redPole.rotation.y+=0.012;
+    if(pole2.redPole) pole2.redPole.rotation.y+=0.012;
+    // Pulse gold mirror lights
+    goldGlows.forEach((l,i)=>{ l.intensity=2.8+Math.sin(t*1.5+i*2.1)*0.35; });
+    // Subtle ceiling flicker (LED)
+    goldLights.forEach((l,i)=>{ l.intensity=2.0+Math.sin(t*3.2+i*0.8)*0.08; });
+    // Animate TV screens (Bad Bunny visualizer)
+    tvScreens.forEach(({tex}) => animateTVTex(tex));
+    // Animate gold particles
+    for(let i=0;i<pN;i++){
+      pPos[i*3]+=pVel[i*3]; pPos[i*3+1]+=pVel[i*3+1]; pPos[i*3+2]+=pVel[i*3+2];
+      if(pPos[i*3+1]>6.2) pPos[i*3+1]=0;
+      if(Math.abs(pPos[i*3])>6.5) pVel[i*3]*=-1;
+    }
+    pGeo.attributes.position.needsUpdate=true;
+    renderer.render(scene,cam);
+  })();
+
+  window.addEventListener('resize',()=>{
+    cam.aspect=W()/H(); cam.updateProjectionMatrix(); renderer.setSize(W(),H());
+  });
+};
+</script>
+
+<script async src="//www.instagram.com/embed.js"></script>
+</body>
+</html>
